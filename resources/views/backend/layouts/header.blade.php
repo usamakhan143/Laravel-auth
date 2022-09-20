@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="{{--{{ route('admin.home') }}--}}" class="logo">
+    <a href="{{ route('dashboard.home') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
 	  <b class="logo-mini">
 		  <span class="light-logo"><img src="{{ asset('backend/images/small-visech-dark.png') }}" alt="logo"></span>

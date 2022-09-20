@@ -26,7 +26,7 @@ Auth::routes();
 //Custom Authentication Sign in routes
 Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\backend'], function(){
 
-    Route::get('/home', 'HomeController@index');
+    Route::get('/home', 'HomeController@index')->name('dashboard.home');
 
     // .rand(123456,999999)
 
