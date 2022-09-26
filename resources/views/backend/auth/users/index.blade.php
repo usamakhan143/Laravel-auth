@@ -60,17 +60,17 @@
 								@endif
 							</td>
 							<td>
-								{{-- @can('users.update', Auth::user()) --}}
+								@can('accounts.update', Auth::user())
 									<a href="{{ route('accounts.edit', $detail->id) }}" class="btn btn-block btn-success btn-xs">
 						                <i class="fa fa-edit"></i> Edit
 						            </a>
-						        {{-- @endcan --}}
+						        @endcan
 
-						        {{-- @can('users.delete', Auth::user()) --}}
+						        @can('accounts.delete', Auth::user())
 					            	<a href="{{ route('accountDestroy', $detail->id) }}" class="btn btn-block btn-danger btn-xs" onclick = "return confirm('Are you sure you want to delete this account?');">
 					                	<i class="fa fa-trash"></i> Delete
 					            	</a>
-					            {{-- @endcan --}}
+					            @endcan
 							</td>
 						</tr>
 					@endforeach

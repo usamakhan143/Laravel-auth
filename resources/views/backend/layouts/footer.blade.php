@@ -72,7 +72,7 @@
 	    $(function(){
 	        setTimeout(function() {
 	            $('.fade-message').slideUp();
-	        }, 3000);
+	        }, 6000);
 	    });
 
 

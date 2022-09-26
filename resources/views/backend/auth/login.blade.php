@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="icon" href="{{ asset('backend/images/logo-light.png') }}">
 
-    <title>Visech - Log in </title>
+    <title>Admin - Log in </title>
   
-	<!-- Bootstrap 4.0-->
+	{{-- <!-- Bootstrap 4.0--> --}}
   <link rel="stylesheet" href="{{ asset('backend/assets/vendor_components/bootstrap/dist/css/bootstrap.css') }}">
 
-  <!-- Bootstrap 4.0-->
+  {{-- <!-- Bootstrap 4.0--> --}}
   <link rel="stylesheet" href="{{ asset('backend/assets/vendor_components/bootstrap/dist/css/bootstrap-extend.css') }}">
 
 	
-  <!-- theme style -->
+  {{-- <!-- theme style --> --}}
   <link rel="stylesheet" href="{{ asset('backend/css/master_style.css') }}">
 
-  <!-- Unique Admin skins. choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+  {{-- <!-- Unique Admin skins. choose a skin from the css/skins folder instead of downloading all of them to reduce the load. --> --}}
   <link rel="stylesheet" href="{{ asset('backend/css/skins/_all-skins.css') }}">
 
 
@@ -27,9 +28,9 @@
 <body class="hold-transition login-page" style="background-color:#3644AF">
 <div class="login-box" style="width: 380px">
   <div class="login-logo">
-    <a href="#"><b>VISECH</b></a>
+    <a href="#"><b>Admin</b></a>
   </div>
-  <!-- /.login-logo -->
+  {{-- <!-- /.login-logo --> --}}
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
@@ -51,7 +52,7 @@
           <span class="ion ion-locked form-control-feedback"></span>
       </div>
       <div class="row">
-        <!-- <div class="col-6">
+        {{-- <!-- <div class="col-6">
           <div class="checkbox">
             <input type="checkbox" id="basic_checkbox_1" >
 			      <label for="basic_checkbox_1">Remember Me</label>
@@ -62,47 +63,36 @@
          <div class="fog-pwd">
           	<a href="javascript:void(0)"><i class="ion ion-locked"></i> Forgot pwd?</a><br>
           </div>
-        </div> -->
-        <!-- /.col -->
+        </div> --> --}}
+        {{-- <!-- /.col --> --}}
         <div class="col-12 text-center">
           <button type="submit" class="btn btn-info btn-block margin-top-10">SIGN IN</button>
         </div>
-        <!-- /.col -->
+        {{-- <!-- /.col --> --}}
       </div>
     </form>
 
-    <!-- <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-social-icon btn-circle btn-facebook"><i class="fa fa-facebook"></i></a>
-      <a href="#" class="btn btn-social-icon btn-circle btn-google"><i class="fa fa-google-plus"></i></a>
-    </div> -->
-    <!-- /.social-auth-links -->
-
-    <!-- <div class="margin-top-30 text-center">
-    	<p>Don't have an account? <a href="register.html" class="text-info m-l-5">Sign Up</a></p>
-    </div> -->
-
   </div>
-  <!-- /.login-box-body -->
+  {{-- <!-- /.login-box-body --> --}}
 </div>
-<!-- /.login-box -->
+{{-- <!-- /.login-box --> --}}
 
 
-  <!-- jQuery 3 -->
+  {{-- <!-- jQuery 3 --> --}}
   <script src="{{ asset('backend/assets/vendor_components/jquery/dist/jquery.js') }}"></script>
   <script src="{{ asset('assets/vendor_components/jquery/dist/jquery.min.js') }}"></script>
 	
-  <!-- popper -->
+  {{-- <!-- popper --> --}}
   <script src="{{ asset('backend/assets/vendor_components/popper/dist/popper.min.js') }}"></script>
   
-  <!-- Bootstrap 4.0-->
+  {{-- <!-- Bootstrap 4.0--> --}}
   <script src="{{ asset('backend/assets/vendor_components/bootstrap/dist/js/bootstrap.js') }}"></script>
 
   <script type="text/javascript">
     $(function(){
         setTimeout(function() {
             $('.fade-message').fadeToggle();
-        }, 3000);
+        }, 10000);
     });
   </script>
 

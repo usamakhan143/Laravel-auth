@@ -3,8 +3,8 @@
     <a href="{{ route('dashboard.home') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
 	  <b class="logo-mini">
-		  <span class="light-logo"><img src="{{ asset('backend/images/small-visech-dark.png') }}" alt="logo"></span>
-		  <span class="dark-logo"><img src="{{ asset('backend/images/small-visech-dark.png') }}" alt="logo"></span>
+		  <span class="light-logo"><img src="{{ asset('backend/images/logo-dark.png') }}" alt="logo"></span>
+		  <span class="dark-logo"><img src="{{ asset('backend/images/logo-dark.png') }}" alt="logo"></span>
 	  </b>
       <!-- logo for regular state and mobile devices -->
       <style type="text/css">
@@ -24,8 +24,8 @@
         }
       </style>
     <span class="logo-lg">
-		  <img src="{{ asset('backend/images/visech.png') }}" alt="logo" class="light-logo">
-	  	<img src="{{ asset('backend/images/visech.png') }}" alt="logo" class="dark-logo">
+		  <img src="{{ asset('backend/images/logo-dark-text.png') }}" alt="logo" class="light-logo">
+	  	<img src="{{ asset('backend/images/logo-dark-text.png') }}" alt="logo" class="dark-logo">
 	  </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->

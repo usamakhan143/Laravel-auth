@@ -7,73 +7,131 @@ use App\Models\backend\Account_role;
 use App\Models\backend\Permission;
 use App\Models\backend\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:account');
+    }
+
     // GET all roles from db
     public function allRoles(){
-        // $roles = Role::where('id', '<>', 1)->get();
-		$roles = Role::all();
-        return view('backend.auth.roles.index', compact('roles'));
+
+        if(Auth::user()->can('roles.view')) {
+
+            // $roles = Role::where('id', '<>', 1)->get();
+            $roles = Role::all();
+            return view('backend.auth.roles.index', compact('roles'));
+        
+        }
+        else {
+            
+            return redirect()->route('dashboard.home');
+
+        }
+        
     }
 
 
 
     // GET method for add roles to db
     public function addRole() {
-        $permissions = Permission::all();
-        return view('backend.auth.roles.create', compact('permissions'));
+
+        if(Auth::user()->can('roles.create')) {
+                
+            $permissions = Permission::all();
+            return view('backend.auth.roles.create', compact('permissions'));
+        }
+        else {
+            return redirect()->route('dashboard.home');
+        }
 	}
 
     // POST method for add roles to db
-    public function storeRole(Request $request){
-        $this->validate($request, [
-            'name' => 'required|max:50|unique:roles',
-        ]);
+    public function storeRole(Request $request) {
 
-        $role = new Role();
+        if(Auth::user()->can('roles.create')) {
 
-        $role->name = $request->name;
+            $this->validate($request, [
+                'name' => 'required|max:50|unique:roles',
+            ]);
 
-        $save = $role->save();
+            $role = new Role();
 
-        $role->permission()->sync($request->permissions);
+            $role->name = $request->name;
 
-        if ($save) {
-            return back()->with('success_msg', 'Role has been added successfully!');
+            $save = $role->save();
+
+            $role->permission()->sync($request->permissions);
+
+            if ($save) {
+                return back()->with('success_msg', 'Role has been added successfully!');
+            }
+
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
         }
     }
 
 
 
     // GET method for update any role from db
-    public function editRole($id){
+    public function editRole($id) {
         
-        $roleedit = Role::find($id);
-        $permissions = Permission::all();
-        $rolepr = $roleedit->permission()->pluck('permission_id')->toArray();
-        return view('backend.auth.roles.edit', compact('roleedit', 'permissions', 'rolepr'));
+        if(Auth::user()->can('roles.update')) {
+
+            $roleedit = Role::find($id);
+            $permissions = Permission::all();
+            $rolepr = $roleedit->permission()->pluck('permission_id')->toArray();
+            return view('backend.auth.roles.edit', compact('roleedit', 'permissions', 'rolepr'));
+        
+        }
+        else {
+            
+            return redirect()->route('dashboard.home');
+
+        }
     
     }
 
     // PUT method for update any role from db
-    public function updateRole(Request $request, $id){
+    public function updateRole(Request $request, $id) {
 
-        $this->validate($request, [
-            'name' => 'required|max:50',
-        ]);
+        if(Auth::user()->can('roles.update')) {
 
-        $roleedit = role::find($id);
+            $this->validate($request, [
+                'name' => 'required|max:50',
+            ]);
 
-        $roleedit->name = $request->name;
+            $roleedit = role::find($id);
 
-        $roleedit->permission()->sync($request->permissions);
+            $roleedit->name = $request->name;
 
-        $save = $roleedit->update();
+            $roleedit->permission()->sync($request->permissions);
 
-        if ($save) {
-            return back()->with('success_msg', 'Role has been updated successfully!');
+            $save = $roleedit->update();
+
+            if ($save) {
+                return back()->with('success_msg', 'Role has been updated successfully!');
+            }
+            
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
         }
 
     }
@@ -82,14 +140,23 @@ class RoleController extends Controller
     // DELETE method for deleting role from db
     public function destroyRole($id){
 
-        $roledel = role::find($id);
+        if(Auth::user()->can('roles.delete')) {
 
-        DB::table('permission_roles')->where('role_id', $id)->delete();
+            $roledel = role::find($id);
 
-        $del_relation = Account_role::where('role_id', '=', $id)->delete();
+            DB::table('permission_roles')->where('role_id', $id)->delete();
 
-        $roledel->delete();
+            $del_relation = Account_role::where('role_id', '=', $id)->delete();
 
-        return back()->with('error_msg', 'Role has been deleted successfully!');
+            $roledel->delete();
+
+            return back()->with('error_msg', 'Role has been deleted successfully!');
+
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
+        }
     }
 }

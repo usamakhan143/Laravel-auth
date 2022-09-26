@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Account;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -73,8 +74,27 @@ class LoginController extends Controller
         $this->middleware('guest:account')->except('logout');
     }
 
-
     
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        $check_status = Account::where('email', $request->email)->first();
+        if ($check_status->status == 0) {
+            return ['email'=>'pending', 'password'=>'Please wait for your account activation when this is activated then please try again'];
+        }
+        else {
+            return ['email'=>$request->email, 'password'=>$request->password, 'status'=> 1];
+        }
+        //return $request->only($this->username(), 'password');
+    }
+
+
     /**
      * Get the guard to be used during authentication.
      *

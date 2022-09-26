@@ -5,48 +5,90 @@ namespace App\Http\Controllers\backend\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\backend\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:account');
+    }
+
+
     // GET method for getting all permissions
     public function allPermissions() {
-        $permissions = Permission::orderBy('name', 'ASC')->get();
-        return view('backend.auth.permissions.index', compact('permissions'));
+
+        if(Auth::user()->can('permissions.view')) {
+
+            $permissions = Permission::orderBy('name', 'ASC')->get();
+            return view('backend.auth.permissions.index', compact('permissions'));
+
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
+        }
     }
 
 
 
     // GET method for create a permission
     public function addPermission() {
-        return view('backend.auth.permissions.create');
+
+        if(Auth::user()->can('permissions.create')) {
+
+            return view('backend.auth.permissions.create');
+    
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
+        }
+
     }
 
     // POST method for create an account
     public function storePermission(Request $request) {
 
-        $this->validate($request, [
-            'name' => 'required|max:50|unique:permissions',
-            'per_for' => 'required'
-        ]);
+        if(Auth::user()->can('permissions.create')) {
 
-        $permissions = new Permission();
-        $p_for = $request->per_for;
+            $this->validate($request, [
+                'name' => 'required|max:50|unique:permissions',
+                'per_for' => 'required'
+            ]);
 
-        if ($p_for == 'other_post-type' || $p_for == 'slots_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type')
-        {
-            $permissions->name = $request->name;
-            $permissions->for = $p_for;
+            $permissions = new Permission();
+            $p_for = $request->per_for;
 
-            $save = $permissions->save();
-            
-            if ($save)
+            if ($p_for == 'other_post-type' || $p_for == 'posttype_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type')
             {
-                return back()->with('success_msg','Permission has been added successfully!');
+                $permissions->name = $request->name;
+                $permissions->for = $p_for;
+
+                $save = $permissions->save();
+                
+                if ($save)
+                {
+                    return back()->with('success_msg','Permission has been added successfully!');
+                }
             }
+            else
+            {
+                return back()->with('error_msg','You are adding some mailcious be carefull or else!');
+            }
+
         }
-        else
-        {
-            return back()->with('error_msg','You are adding some mailcious be carefull or else!');
+        else {
+
+            return redirect()->route('dashboard.home');
+
         }
 
     }
@@ -56,58 +98,76 @@ class PermissionController extends Controller
     // GET method for edit permission from db
     public function editPermission($id) {
         
-        $peredit = Permission::find($id);
-        return view('backend.auth.permissions.edit', compact('peredit'));
-    
+        if(Auth::user()->can('permissions.update')) {
+
+            $peredit = Permission::find($id);
+            return view('backend.auth.permissions.edit', compact('peredit'));
+
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
+        }
+
     }
 
     public function updatePermission(Request $request, $id) {
 
-        $this->validate($request, [
-            'name' => 'required|max:50',
-            'per_for' => 'required'
-        ]);
+        if(Auth::user()->can('permissions.update')) {
 
-        $peredit = Permission::find($id);
-        $p_for = $request->per_for;
+            $this->validate($request, [
+                'name' => 'required|max:50',
+                'per_for' => 'required'
+            ]);
 
-        if ($peredit->name == $request->name && $peredit->for == $p_for) 
-        {
-            if ($p_for == 'other_post-type' || $p_for == 'slots_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type')
+            $peredit = Permission::find($id);
+            $p_for = $request->per_for;
+
+            if ($peredit->name == $request->name && $peredit->for == $p_for) 
             {
-                $peredit->name = $request->name;
-                $peredit->for = $p_for;
-
-                $save = $peredit->update();
-
-                if ($save) 
+                if ($p_for == 'other_post-type' || $p_for == 'posttype_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type')
                 {
-                    return back()->with('success_msg','Permission has been updated without any changes!');
+                    $peredit->name = $request->name;
+                    $peredit->for = $p_for;
+
+                    $save = $peredit->update();
+
+                    if ($save) 
+                    {
+                        return back()->with('success_msg','Permission has been updated without any changes!');
+                    }
+                }
+                else
+                {
+                    return back()->with('error_msg','You are adding some mailcious be carefull or else!');
                 }
             }
             else
             {
-                return back()->with('error_msg','You are adding some mailcious be carefull or else!');
+                if ($p_for == 'other_post-type' || $p_for == 'slots_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type')
+                {
+                    $peredit->name = $request->name;
+                    $peredit->for = $p_for;
+
+                    $save = $peredit->update();
+
+                    if ($save) 
+                    {
+                        return back()->with('success_msg','Permission has been updated successfully!');
+                    }
+                }
+                else
+                {
+                    return back()->with('error_msg','You are adding some mailcious be carefull or else!');
+                }
             }
+
         }
-        else
-        {
-            if ($p_for == 'other_post-type' || $p_for == 'slots_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type')
-            {
-                $peredit->name = $request->name;
-                $peredit->for = $p_for;
+        else {
 
-                $save = $peredit->update();
+            return redirect()->route('dashboard.home');
 
-                if ($save) 
-                {
-                    return back()->with('success_msg','Permission has been updated successfully!');
-                }
-            }
-            else
-            {
-                return back()->with('error_msg','You are adding some mailcious be carefull or else!');
-            }
         }
 
     }
@@ -116,12 +176,21 @@ class PermissionController extends Controller
 
     // Delete Method for deleting permissions
     public function destroyPermission($id) {
-        
-        $per_del = Permission::find($id);
 
-        $per_del->delete();
+        if(Auth::user()->can('permissions.destroy')) {
 
-        return redirect()->route('permissions.index')->with('error_msg','Permission has been deleted successfully!');
+            $per_del = Permission::find($id);
+
+            $per_del->delete();
+
+            return redirect()->route('permissions.index')->with('error_msg','Permission has been deleted successfully!');
+
+        }
+        else {
+
+            return redirect()->route('dashboard.home');
+
+        }
     
     }
 }

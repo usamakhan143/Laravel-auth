@@ -44,7 +44,7 @@
 				            	<div class="demo-checkbox">
 
 				            		@foreach($permissions as $detail)
-				            			@if($detail->for == 'slots_post-type')
+				            			@if($detail->for == 'posttype_post-type')
 											
 											<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}" {{ in_array($detail->id, $rolepr) ? 'checked' : ''}}>
 											<label for="{{ $detail->name }}">{{ $detail->name }}</label>

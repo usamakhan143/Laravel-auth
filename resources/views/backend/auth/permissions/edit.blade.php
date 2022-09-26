@@ -43,7 +43,7 @@
 								<select name="per_for" class="form-control">
 									<option value="">Select Permission for</option>
 
-									<option value="slots_post-type" <?php if ($peredit->for == 'slots_post-type') {
+									<option value="posttype_post-type" <?php if ($peredit->for == 'posttype_post-type') {
 										echo "selected";
 									}  ?>>Parking Slots</option>
 

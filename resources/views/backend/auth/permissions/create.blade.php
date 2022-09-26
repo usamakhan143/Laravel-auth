@@ -42,7 +42,7 @@
 						<div class="controls">
 							<select name="per_for" class="form-control">
 								<option value="">Select Permission for</option>
-								<option value="slots_post-type">Parking Slots</option>
+								<option value="posttype_post-type">New Post-type</option>
 								<option value="users_post-type">Users</option>
 								<option value="roles_post-type">Roles</option>
 								<option value="permissions_post-type">Permissions</option>

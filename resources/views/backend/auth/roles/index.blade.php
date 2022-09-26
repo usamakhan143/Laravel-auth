@@ -42,21 +42,23 @@
 							<td>{{ $detail->name }}</td>
 							<td>
 								<div class="btn-group" role="group" aria-label="Basic example">
-									{{-- @can('roles.update', Auth::user()) --}}
+									@can('roles.update', Auth::user())
 										<a href="{{ route('role.edit', $detail->id) }}" class="btn btn-success">
 						                	<i class="fa fa-edit"></i> Edit
 						            	</a>&nbsp;
-						            {{-- @endcan --}}
-						            <a href="{{ route('del.role', $detail->id) }}" class="btn btn-danger" onclick = "return confirm('Are you sure you want to delete this Role?');">
-						                <i class="fa fa-trash"></i> Delete
-						            </a>
-						            @can('roles.delete', Auth::user())
+						            @endcan
+									@can('roles.delete', Auth::user())
+										<a href="{{ route('del.role', $detail->id) }}" class="btn btn-danger" onclick = "return confirm('Are you sure you want to delete this Role?');">
+											<i class="fa fa-trash"></i> Delete
+										</a>
+									@endcan
+						            {{-- @can('roles.delete', Auth::user())
 						            	<form method="post" action="{{ route('roles.destroy', $detail->id) }}" onclick = "return confirm('Are you sure you want to delete this Role?');">
 					                    	@csrf
 					                    	@method('DELETE')
 					                    	<button type="submit" class="btn btn-danger">Delete</button>
 					                	</form>
-					                @endcan
+					                @endcan --}}
 					            </div>
 							</td>
 						</tr>

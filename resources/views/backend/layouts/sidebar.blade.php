@@ -5,23 +5,23 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="">
-          <a href="{{-- route('admin.home') --}}">
+          <a href="{{ route('dashboard.home') }}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
 
-        {{-- @can('slots.view', Auth::user()) --}}
+        {{-- @can('', Auth::user()) --}}
           <li class="treeview">
-            <a href="{{-- route('all.slots') --}}">
+            <a href="{{-- route('') --}}">
               <i class="fa fa-th"></i>
-              <span>Attendance</span>
+              <span>Post-type</span>
             </a>
             <ul class="treeview-menu">
-              {{-- @can('slots.view', Auth::user()) --}}
-                <li><a href="{{-- route('all.slots') --}}"><i class="fa fa-genderless"></i>Attendance</a></li>
+              {{-- @can('', Auth::user()) --}}
+                <li><a href="{{-- route('') --}}"><i class="fa fa-genderless"></i>New Post-type</a></li>
               {{-- @endcan --}}
-              {{-- @can('slots.create', Auth::user()) --}}
-                <li><a href="{{-- route('slots.add') --}}"><i class="fa fa-genderless"></i>Add new</a></li>
+              {{-- @can('', Auth::user()) --}}
+                <li><a href="{{-- route('') --}}"><i class="fa fa-genderless"></i>Add new</a></li>
               {{-- @endcan --}}
             </ul>
           </li>
@@ -45,55 +45,55 @@
         {{-- @endcan --}}
 
 
-        {{-- @can('users.view', Auth::user()) --}}
+        @can('accounts.view', Auth::user())
           <li class="treeview">
             <a href="{{ route('all.accounts') }}">
               <i class="fa fa-users"></i> <span>Users</span>
             </a>
             <ul class="treeview-menu">
-              {{-- @can('users.view', Auth::user()) --}}
+              @can('accounts.view', Auth::user())
                 <li><a href="{{ route('all.accounts') }}"><i class="fa fa-genderless"></i>All Users</a></li>
-              {{-- @endcan --}}
-              {{-- @can('users.create', Auth::user()) --}}
+              @endcan
+              @can('accounts.create', Auth::user())
                 <li><a href="{{ route('accounts.create') }}"><i class="fa fa-genderless"></i>Add New User</a></li>
-              {{-- @endcan --}}
+              @endcan
             </ul>
           </li>
-        {{-- @endcan --}}
+        @endcan
 
 
-        {{-- @can('roles.view', Auth::user()) --}}
+        @can('roles.view', Auth::user())
           <li class="treeview">
             <a href="{{ route('roles.index') }}">
               <i class="fa fa-user-tag"></i> <span>Roles</span>
             </a>
             <ul class="treeview-menu">
-              {{-- @can('roles.view', Auth::user()) --}}
+              @can('roles.view', Auth::user())
                 <li><a href="{{ route('roles.index') }}"><i class="fa fa-genderless"></i>All Roles</a></li>
-              {{-- @endcan --}}
-              {{-- @can('roles.create', Auth::user()) --}}
+              @endcan
+              @can('roles.create', Auth::user())
                 <li><a href="{{ route('roles.create') }}"><i class="fa fa-genderless"></i>Add New Role</a></li>
-              {{-- @endcan --}}
+              @endcan
             </ul>
           </li>
-        {{-- @endcan --}}
+        @endcan
 
 
-        {{-- @can('permissions.view', Auth::user()) --}}
+        @can('permissions.view', Auth::user())
           <li class="treeview">
-            <a href="{{-- route('roles.index') --}}">
+            <a href="{{ route('permissions.index') }}">
               <i class="fa fa-user-lock"></i> <span>Permissions</span>
             </a>
             <ul class="treeview-menu">
-              {{-- @can('permissions.view', Auth::user()) --}}
+              @can('permissions.view', Auth::user())
                 <li><a href="{{ route('permissions.index') }}"><i class="fa fa-genderless"></i>All Permissions</a></li>
-              {{-- @endcan --}}
-              {{-- @can('permissions.create', Auth::user()) --}}
+              @endcan
+              @can('permissions.create', Auth::user())
                 <li><a href="{{ route('permissions.create') }}"><i class="fa fa-genderless"></i>Add Permission</a></li>
-              {{-- @endcan --}}
+              @endcan
             </ul>
           </li>
-        {{-- @endcan --}}
+        @endcan
 
         <li class="treeview">
             <a href="{{-- route('logout') --}}"
