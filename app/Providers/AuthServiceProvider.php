@@ -27,7 +27,9 @@ class AuthServiceProvider extends ServiceProvider
 
         // Accounts
         Gate::resource('accounts', 'App\Policies\AccountPolicy');
-        // Gate::define('accounts.chgPassword', 'App\Policies\AccountPolicy@chgPassword');
+        
+        // Change password
+        Gate::define('accounts.chgPassword', 'App\Policies\AccountPolicy@chgPassword');
         
         //Permissions
         Gate::resource('permissions', 'App\Policies\PermissionPolicy');

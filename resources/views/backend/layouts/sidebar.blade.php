@@ -33,13 +33,13 @@
               <i class="fa fa-cog"></i> <span>Settings</span>
             </a>
             <ul class="treeview-menu">
-              {{-- @can('settings.view', Auth::user()) --}}
+              @can('settings.view', Auth::user())
                 <li><a href="{{-- route('setings') --}}"><i class="fa fa-genderless"></i>Configurations</a></li>
-              {{-- @endcan --}}
+              @endcan
 
-              {{-- @can('users.chgPassword', Auth::user()) --}}
-                <li><a href="{{-- route('change.pass', Auth::user()->id) --}}"><i class="fa fa-genderless"></i>Change Password</a></li>
-              {{-- @endcan --}}
+              @can('accounts.chgPassword', Auth::user())
+                <li><a href="{{ route('change.pass', Auth::user()->id) }}"><i class="fa fa-genderless"></i>Change Password</a></li>
+              @endcan
             </ul>
           </li>
         {{-- @endcan --}}

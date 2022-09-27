@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Changepass;
 use App\Models\backend\Account;
 use App\Models\backend\Account_role;
 use App\Models\backend\Role;
@@ -182,4 +183,59 @@ class AccountController extends Controller
 
         }
     }
+
+
+    	//Change Password
+	public function newPass($id) {
+
+		if (Auth::user()->can('accounts.chgPassword')) {
+		
+            $user = Account::find($id);
+			return view('backend.auth.users.changepass', compact('user'));
+		
+        } 
+        else {
+		
+            return redirect()->route('dashboard.home');
+		
+        }
+	}
+
+	public function passChanged($id, Changepass $request) {
+		
+        if (Auth::user()->can('accounts.chgPassword')) {
+			
+            $user = Account::find($id);
+			// $getemail = Emailsetting::find(4);
+
+			// $data = [
+			// 	'email' => $user->email,
+			// 	'lastpass' => $request->lpass,
+			// 	'newpass' => $request->newpass,
+			// ];
+
+			// $user_email = [$getemail->emails];
+
+			if (Hash::check($request->lpass, $user->password)) {
+				$user->password = Hash::make($request->newpass);
+				$save = $user->update();
+				if ($save) {
+					// Mail::send('admin.users.emailTemp', $data, function ($msgs) use ($user_email) {
+					// 	$msgs->to($user_email);
+					// 	$msgs->subject('New Update for Password');
+					// });
+					return back()->with('success-msg', 'Password has been changed successfully');
+				}
+			} else {
+				return back()->with('error_msg', 'Password doesnot match please try again.');
+			}
+		
+        } 
+        else 
+        {
+		
+            return redirect()->route('dashboard.home');
+		
+        }
+	}
 }

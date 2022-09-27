@@ -40,7 +40,7 @@
 						<div class="row">
 
 				            <div class="col-lg-3 pt-4 pb-4">
-				            	<h5>Parking Permissions <span class="text-danger">*</span></h5>
+				            	<h5>Post-type Permissions <span class="text-danger">*</span></h5>
 				            	<div class="demo-checkbox">
 
 				            		@foreach($permissions as $detail)

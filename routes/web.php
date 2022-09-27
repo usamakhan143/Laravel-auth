@@ -60,6 +60,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     Route::put('/edit-account/{id}', 'Auth\AccountController@accountUpdate')->name('accounts.update');
     // Delete Account
     Route::get('/delete-account/{id}', 'Auth\AccountController@accountDestroy')->name('accountDestroy');
+    // Change Password
+    Route::get('/change-password/{id}', 'Auth\AccountController@newPass')->name('change.pass');
+    Route::put('/change-password/{id}', 'Auth\AccountController@passChanged')->name('changed.pass');
 });
 
 

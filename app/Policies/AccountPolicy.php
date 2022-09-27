@@ -92,10 +92,10 @@ class AccountPolicy
     }
 
 
-    // public function chgPassword(Account $admin)
-    // {
-    //     return $this->getPermissions($admin, 'Change-password');
-    // }
+    public function chgPassword(Account $admin)
+    {
+        return $this->getPermissions($admin, 'Change-password');
+    }
 
 
     //Main Function for all the policies
