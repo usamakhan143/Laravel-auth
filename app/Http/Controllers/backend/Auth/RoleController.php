@@ -28,8 +28,7 @@ class RoleController extends Controller
 
         if(Auth::user()->can('roles.view')) {
 
-            // $roles = Role::where('id', '<>', 1)->get();
-            $roles = Role::all();
+            $roles = Role::where('id', '<>', 1)->get();
             return view('backend.auth.roles.index', compact('roles'));
         
         }
