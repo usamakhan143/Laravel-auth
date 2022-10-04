@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Changepass;
 use App\Models\backend\Account;
 use App\Models\backend\Account_role;
+use App\Models\backend\Profile;
 use App\Models\backend\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +48,7 @@ class AccountController extends Controller
 
         if(Auth::user()->can('accounts.create')) {
 
-            $roles = Role::where('id', '<>', 1)->get();
+            $roles = Role::where([['id', '<>', 1], ['id', '<>', 2]])->get();
             return view('backend.auth.users.create', compact('roles'));
 
         }
@@ -69,9 +70,10 @@ class AccountController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:accounts'],
                 'phone' => ['required', 'numeric'],
-                //'image' => ['required'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                // 'image' => ['required'],
+                // 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'role' => ['required'],
+                'hireDate' => ['required']
 
             ]);
 
@@ -79,16 +81,25 @@ class AccountController extends Controller
 
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->image = 'backend/images/usama.png';
+            $user->password = bcrypt(123456789); // bcrypt($request->password);
+            $user->image = 'backend/images/profile.png';
             $user->phone = $request->phone;
             $user->status = $request->status;
-            $user->save();
+            $save_user = $user->save();
 
-            $user->roles()->sync($request->role);
-
-            return redirect()->route('all.accounts')->with('success-msg', 'New Account has been Created!');
-
+            if($save_user) {
+                
+                Profile::create([
+                    'identityNumber' => 'NaN',
+                    'hireDate' => $request->hireDate,
+                    'gender' => 'NaN',
+                    'status' => 0,
+                    'account_id' => $user->id,
+                ]);
+                
+                $user->roles()->sync($request->role);
+                return redirect()->route('all.accounts')->with('success-msg', 'New Account has been Created!');
+            }
         }
         else {
 
@@ -137,14 +148,14 @@ class AccountController extends Controller
                 $user->name = $request->name;
                 $user->email = $request->email;
                 $user->password = bcrypt($request->password);
-                $user->image = 'backend/images/usama.png';
+                // $user->image = 'backend/images/profile.png';
                 $user->phone = $request->phone;
                 $user->status = $request->status ?? 0;
                 $user->update();
             } else {
                 $user->name = $request->name;
                 $user->email = $request->email;
-                $user->image = 'backend/images/usama.png';
+                // $user->image = 'backend/images/profile.png';
                 $user->phone = $request->phone;
                 $user->status = $request->status ?? 0;
                 $user->update();

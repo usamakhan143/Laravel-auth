@@ -17,6 +17,11 @@ Route::get('/', function () {
     return redirect()->route('company.login');
 });
 
+
+Route::get('/profile', function () {
+    return view('backend.auth.users.profile');
+});
+
 Auth::routes();
 
 //Custom Authentication Sign in routes
@@ -63,6 +68,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     // Change Password
     Route::get('/change-password/{id}', 'Auth\AccountController@newPass')->name('change.pass');
     Route::put('/change-password/{id}', 'Auth\AccountController@passChanged')->name('changed.pass');
+    // Profile
+    Route::get('/profile/{id}', 'Auth\ProfileController@getProfile')->name('account.profile');
+    Route::put('/profile/{id}', 'Auth\ProfileController@updateMyProfile')->name('update.profile');
 });
 
 

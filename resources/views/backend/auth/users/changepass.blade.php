@@ -4,15 +4,15 @@
 
 @section('content')
 
-	<!-- Basic Forms -->
+	{{-- Basic Forms --}}
 	<div class="col-md-6">
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Change Password</h3>
-          <!-- <h6 class="box-subtitle">Bootstrap Form Validation check the <a href="http://reactiveraven.github.io/jqBootstrapValidation/">official website </a></h6> -->
+          {{-- <h6 class="box-subtitle">Bootstrap Form Validation check the <a href="http://reactiveraven.github.io/jqBootstrapValidation/">official website </a></h6> --}}
 
         </div>
-        <!-- /.box-header -->
+        {{-- /.box-header --}}
         <div class="box-body">
         	@if(Session::has('success-msg'))
 				<p class="alert alert-success fade-message">{{ Session::get('success-msg') }}</p>
@@ -56,13 +56,13 @@
 				</form>
             	
             </div>
-            <!-- /.col -->
+            {{-- /.col --}}
           </div>
-          <!-- /.row -->
+          {{-- /.row --}}
         </div>
-        <!-- /.box-body -->
+        {{-- /.box-body --}}
       </div>
-      <!-- /.box -->
+      {{-- /.box --}}
   </div>
 
 @endsection

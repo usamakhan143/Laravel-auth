@@ -14,4 +14,8 @@ class Account extends Authenticatable
     {
     	return $this->belongsToMany('App\Models\backend\Role','account_roles');
     }
+
+    public function profile() {
+    	return $this->hasOne('App\Models\backend\Profile','account_id');
+    }
 }

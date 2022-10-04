@@ -62,7 +62,7 @@
             			</div>
             		</div>
 
-            		<div class="row">
+            		{{-- <div class="row">
             			<div class="col-lg-6">
 							<div class="form-group">
 								<h5>Password <span class="text-danger">*</span></h5>
@@ -89,11 +89,11 @@
 								@enderror
 							</div>							
 						</div>
-					</div>
+					</div> --}}
 
 
 					<div class="row">
-						<div class="col-lg-8">
+						<div class="col-lg-5">
 							<div class="form-group">
 								<h5>Phone <span class="text-danger">*</span></h5>
 								<div class="controls">
@@ -106,10 +106,32 @@
 								@enderror
 							</div>
 						</div>
-						<div class="col-lg-4">
+
+						<div class="col-lg-5">
+							{{-- <div class="form-group">
+								<label>Select Working Hours</label>
+								<select class="form-control">
+								  <option>Morning</option>
+								</select>
+							</div> --}}
+
+							<div class="form-group">
+								<label>Hiring Date</label>
+								<div class="controls">
+									<input class="form-control" type="date" name="hireDate"/>
+								</div>
+								@error('hireDate')
+									<p class="validate">
+										{{ $message }}
+									</p>
+								@enderror
+							</div>
+						</div>
+
+						<div class="col-lg-2">
 							<div class="form-group">
 								<div class="form-group">
-									<h5>Status <span class="text-danger">*</span></h5>
+									<h5>Status <span class="text-danger"></span></h5>
 									<div class="controls">
 										<fieldset>
 											<label class="custom-control custom-checkbox">

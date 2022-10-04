@@ -17,6 +17,9 @@ class HomeController extends Controller
         $this->middleware('auth:account');
     }
 
+
+
+    
     public function index(){
         return view('backend.layouts.dashboard');
     }

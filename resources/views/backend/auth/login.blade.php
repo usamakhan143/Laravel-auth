@@ -28,7 +28,7 @@
 <body class="hold-transition login-page" style="background-color:#3644AF">
 <div class="login-box" style="width: 380px">
   <div class="login-logo">
-    <a href="#"><b>Admin</b></a>
+    <a href="#"><b>VISECH</b></a>
   </div>
   {{-- <!-- /.login-logo --> --}}
   <div class="login-box-body">

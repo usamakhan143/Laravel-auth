@@ -4,19 +4,19 @@
 
 @section('content')
 
-	<!-- Basic Forms -->
+{{-- Basic Forms --}}
 <div class="col-md-9">
 	<div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Edit User : {{$user->name}}</h3>
-          <!-- <h6 class="box-subtitle">Bootstrap Form Validation check the <a href="http://reactiveraven.github.io/jqBootstrapValidation/">official website </a></h6> -->
+          {{-- <h6 class="box-subtitle">Bootstrap Form Validation check the <a href="http://reactiveraven.github.io/jqBootstrapValidation/">official website </a></h6> --}}
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
           </div>
         </div>
-        <!-- /.box-header -->
+        {{-- box-header --}}
         <div class="box-body">
         	@if(Session::has('success_msg'))
 				<p class="alert alert-success fade-message">{{ Session::get('success_msg') }}</p>
@@ -138,13 +138,13 @@
 					</form>
 	            	
 	            </div>
-	            <!-- /.col -->
+	            {{-- /.col --}}
           	</div>
-          	<!-- /.row -->
+          	{{-- /.row --}}
         </div>
-        <!-- /.box-body -->
+        {{-- /.box-body --}}
     </div>
-      <!-- /.box -->
+    {{-- /.box --}}
 </div>
 
 @endsection
