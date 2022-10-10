@@ -149,21 +149,19 @@
 					</div>
 
 					<div class="form-group">
-            			<h5>Assign Shift <span class="text-danger">*</span></h5>
-						<div class="box-body">
-							<div class="demo-checkbox">
-								@foreach($shifts as $shift)
-									<input type="checkbox" name="shift[]" id="{{ $shift->name }}" class="chk-col-blue" value="{{ $shift->id }}">
-									<label for="{{ $shift->name }}">{{ $shift->name }}</label>
-								@endforeach
-							</div>
-							@error('shift')
-							    <p class="validate">
-							      {{ $message }}
-							    </p>
-							@enderror
-			            </div>
-		            </div>
+						<label>Assign Shift <span class="text-danger">*</span></label>
+						<select multiple="" name="shift[]" class="form-control">
+							@foreach($shifts as $shift)
+								<option id="{{ $shift->name }}" value="{{ $shift->id }}">{{ $shift->name }}</option>	
+							@endforeach
+						</select>
+						
+						@error('shift')
+							<p class="validate">
+							{{ $message }}
+							</p>
+						@enderror
+					</div>
 
 					<div class="form-group">
             			<h5>Assign Roles <span class="text-danger">*</span></h5>

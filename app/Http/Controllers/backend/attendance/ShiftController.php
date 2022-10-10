@@ -53,23 +53,38 @@ class ShiftController extends Controller
         
         if(Auth::user()->can('shift.create')) {
 
+            $this->validate($request, [
+
+                'name' => ['required', 'string', 'max:255'],
+                'start_time' => ['required'],
+                'end_time' => ['required'],
+
+            ]);
+
             $add_shift = new Shift();
 
             $to = Carbon::createFromFormat('H:s', $request->start_time);
             $from = Carbon::createFromFormat('H:s', $request->end_time);
             $getHours = $to->diffInHours($from);
 
-            $add_shift->create([
+            if($getHours > 5) {
 
-                'name' => $request->name,
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
-                'working_hours' => $getHours,
-                'status' => $request->status ?? 0
+                $add_shift->create([
 
-            ]);
+                    'name' => $request->name,
+                    'start_time' => $request->start_time,
+                    'end_time' => $request->end_time,
+                    'working_hours' => $getHours,
+                    'status' => $request->status ?? 0
 
-            return back()->with('success_msg', 'Shift has been created successfully');
+                ]);
+
+                return back()->with('success_msg', 'Shift has been created successfully');
+            }
+            else {
+                return back()->with('error_msg', 'Working hours cannot be less than 6');
+            }
+
         }
         else {
             return redirect()->route('dashboard.home');
@@ -93,23 +108,37 @@ class ShiftController extends Controller
         
         if(Auth::user()->can('shift.update')) {
 
+            $this->validate($request, [
+
+                'name' => ['required', 'string', 'max:255'],
+                'start_time' => ['required'],
+                'end_time' => ['required'],
+
+            ]);
+
             $findShift = Shift::find($id);
 
             $to = Carbon::createFromFormat('H:s', $request->start_time);
             $from = Carbon::createFromFormat('H:s', $request->end_time);
             $updatedHours = $to->diffInHours($from);
+ 
+            if($updatedHours > 5) {
 
-            $findShift->update([
+                $findShift->update([
 
-                'name' => $request->name,
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
-                'working_hours' => $updatedHours,
-                'status' => $request->status ?? 0
+                    'name' => $request->name,
+                    'start_time' => $request->start_time,
+                    'end_time' => $request->end_time,
+                    'working_hours' => $updatedHours,
+                    'status' => $request->status ?? 0
 
-            ]);
+                ]);
 
-            return back()->with('success_msg', 'Shift has been updated successfully');
+                return back()->with('success_msg', 'Shift has been updated successfully');
+            }
+            else {
+                return back()->with('error_msg', 'Working hours cannot be less than 6');
+            }
         }
         else {
             return redirect()->route('dashboard.home');

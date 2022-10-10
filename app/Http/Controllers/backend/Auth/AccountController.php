@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Changepass;
+use App\Models\attendance\Shift;
 use App\Models\backend\Account;
 use App\Models\backend\Account_role;
 use App\Models\backend\Profile;
@@ -49,7 +50,8 @@ class AccountController extends Controller
         if(Auth::user()->can('accounts.create')) {
 
             $roles = Role::where([['id', '<>', 1], ['id', '<>', 2]])->get();
-            return view('backend.auth.users.create', compact('roles'));
+            $shifts = Shift::get();
+            return view('backend.auth.users.create', compact('roles', 'shifts'));
 
         }
         else {
@@ -119,7 +121,9 @@ class AccountController extends Controller
             $user = Account::find($id);
             $roles = role::where('id', '<>', 1)->get();
             $user_role = $user->roles()->pluck('role_id')->toArray();
-            return view('backend.auth.users.edit', compact('user', 'roles', 'user_role'));
+            $shifts = Shift::get();
+            $user_shift = $user->shifts()->pluck('shift_id')->toArray();
+            return view('backend.auth.users.edit', compact('user', 'roles', 'user_role', 'shifts', 'user_shift'));
 
         }
         else {

@@ -63,6 +63,10 @@
 										echo "selected";
 									}  ?>>Shifts</option>
 
+									<option value="dashboard-panel" <?php if ($peredit->for == 'dashboard-panel') {
+										echo "selected";
+									}  ?>>Dashboard Panel</option>
+
 									<option value="other_post-type" <?php if ($peredit->for == 'other_post-type') {
 										echo "selected";
 									}  ?>>Other</option>

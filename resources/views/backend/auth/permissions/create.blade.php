@@ -47,6 +47,7 @@
 								<option value="roles_post-type">Roles</option>
 								<option value="permissions_post-type">Permissions</option>
 								<option value="shifts_post-type">Shifts</option>
+								<option value="dashboard-panel">Dashboard Panel</option>
 								<option value="other_post-type">Other</option>
 							</select>
 						</div>

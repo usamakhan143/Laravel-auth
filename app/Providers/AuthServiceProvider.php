@@ -46,5 +46,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('shift.create', 'App\Policies\ShiftPolicy@create');
         Gate::define('shift.update', 'App\Policies\ShiftPolicy@update');
         Gate::define('shift.delete', 'App\Policies\ShiftPolicy@delete');
+
+        // Main Dashboard Panel
+        Gate::define('employees', 'App\Policies\DashboardpagePolicy@viewEmp');
     }
 }
