@@ -10,22 +10,22 @@
           </a>
         </li>
 
-        {{-- @can('', Auth::user()) --}}
+        @can('shift.view', Auth::user())
           <li class="treeview">
             <a href="{{-- route('') --}}">
-              <i class="fa fa-th"></i>
-              <span>Post-type</span>
+              <i class="fa fa-calendar"></i>
+              <span>Attendance</span>
             </a>
             <ul class="treeview-menu">
-              {{-- @can('', Auth::user()) --}}
-                <li><a href="{{-- route('') --}}"><i class="fa fa-genderless"></i>New Post-type</a></li>
-              {{-- @endcan --}}
-              {{-- @can('', Auth::user()) --}}
-                <li><a href="{{-- route('') --}}"><i class="fa fa-genderless"></i>Add new</a></li>
-              {{-- @endcan --}}
+              @can('shift.view', Auth::user())
+                <li><a href="{{ route('shifts.index') }}"><i class="fa fa-genderless"></i>Shifts</a></li>
+              @endcan
+              {{-- @can('', Auth::user())
+                <li><a href=""><i class="fa fa-genderless"></i>Add new</a></li>
+              @endcan --}}
             </ul>
           </li>
-        {{-- @endcan --}}
+        @endcan
 
         {{-- @can('settings.view', Auth::user()) --}}
           <li class="treeview">

@@ -58,6 +58,10 @@
 									<option value="permissions_post-type" <?php if ($peredit->for == 'permissions_post-type') {
 										echo "selected";
 									}  ?>>Permissions</option>
+									
+									<option value="shifts_post-type" <?php if ($peredit->for == 'shifts_post-type') {
+										echo "selected";
+									}  ?>>Shifts</option>
 
 									<option value="other_post-type" <?php if ($peredit->for == 'other_post-type') {
 										echo "selected";

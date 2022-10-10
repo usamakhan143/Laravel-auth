@@ -36,5 +36,15 @@ class AuthServiceProvider extends ServiceProvider
 
         //Roles
         Gate::resource('roles', 'App\Policies\RolePolicy');
+        
+        // Profile
+        Gate::define('profile.view', 'App\Policies\ProfilePolicy@view');
+        Gate::define('profile.IdNum', 'App\Policies\ProfilePolicy@identityNumberView');
+
+        // Shifts
+        Gate::define('shift.view', 'App\Policies\ShiftPolicy@viewAll');
+        Gate::define('shift.create', 'App\Policies\ShiftPolicy@create');
+        Gate::define('shift.update', 'App\Policies\ShiftPolicy@update');
+        Gate::define('shift.delete', 'App\Policies\ShiftPolicy@delete');
     }
 }

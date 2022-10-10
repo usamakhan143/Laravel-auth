@@ -148,6 +148,22 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+            			<h5>Assign Shift <span class="text-danger">*</span></h5>
+						<div class="box-body">
+							<div class="demo-checkbox">
+								@foreach($shifts as $shift)
+									<input type="checkbox" name="shift[]" id="{{ $shift->name }}" class="chk-col-blue" value="{{ $shift->id }}">
+									<label for="{{ $shift->name }}">{{ $shift->name }}</label>
+								@endforeach
+							</div>
+							@error('shift')
+							    <p class="validate">
+							      {{ $message }}
+							    </p>
+							@enderror
+			            </div>
+		            </div>
 
 					<div class="form-group">
             			<h5>Assign Roles <span class="text-danger">*</span></h5>

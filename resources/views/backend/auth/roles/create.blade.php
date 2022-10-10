@@ -51,19 +51,6 @@
 		            <div class="row">
 
 			            <div class="col-lg-3 pt-4 pb-4">
-			            	<h5>Post-type Permissions <span class="text-danger">*</span></h5>
-			            	<div class="demo-checkbox">
-
-			            		@foreach($permissions as $detail)
-			            			@if($detail->for == 'posttype_post-type')
-										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}">
-										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
-									@endif
-								@endforeach
-
-			            	</div>
-			            </div>
-			            <div class="col-lg-3 pt-4 pb-4">
 			            	<h5>Users Permissions <span class="text-danger">*</span></h5>
 			            	<div class="demo-checkbox">
 			            		
@@ -97,6 +84,20 @@
 			            		
 			            		@foreach($permissions as $detail)
 			            			@if($detail->for == 'permissions_post-type')
+										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}">
+										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
+									@endif
+								@endforeach
+
+			            	</div>
+			            </div>
+
+						<div class="col-lg-3 pt-4 pb-4">
+			            	<h5>Shifts <span class="text-danger">*</span></h5>
+			            	<div class="demo-checkbox">
+			            		
+			            		@foreach($permissions as $detail)
+			            			@if($detail->for == 'shifts_post-type')
 										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}">
 										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
 									@endif

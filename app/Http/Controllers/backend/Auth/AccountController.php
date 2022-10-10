@@ -98,6 +98,7 @@ class AccountController extends Controller
                 ]);
                 
                 $user->roles()->sync($request->role);
+                $user->shifts()->sync($request->shift);
                 return redirect()->route('all.accounts')->with('success-msg', 'New Account has been Created!');
             }
         }
@@ -161,6 +162,7 @@ class AccountController extends Controller
                 $user->update();
             }
 
+            $user->shifts()->sync($request->shift);
             $user->roles()->sync($request->role);
 
             return redirect()->route('all.accounts')->with('success-msg', 'Account has been updated!');
@@ -181,6 +183,7 @@ class AccountController extends Controller
 
             $del = Account::find($id);
             Account_role::where('account_id', '=', $id)->delete();
+            Profile::where('account_id', '=', $id)->delete();
 
             $del->delete();
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\backend\Account;
 use App\Models\backend\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -23,59 +24,65 @@ class ProfileController extends Controller
 
 
     public function getProfile($id) {
-        
-        $profile_Id = Profile::where('account_id','=', $id)->value('id');
-        $get_Profile = Profile::find($profile_Id);
-        return view('backend.auth.users.profile', compact('get_Profile'));
-    
+
+        if(Auth::user()->can('profile.view')) {
+            $profile_Id = Profile::where('account_id','=', $id)->value('id');
+            $get_Profile = Profile::find($profile_Id);
+            return view('backend.auth.users.profile', compact('get_Profile'));
+        }
+        else {
+            return redirect()->route('dashboard.home');
+        }
     }
 
     public function updateMyProfile($id, Request $request) {
 
-        $profile_Id = Profile::where('account_id','=', $id)->value('id');
-        $get_Profile = Profile::find($profile_Id);
+        if(Auth::user()->can('profile.view')) {
 
-        $profileImage = $request->file('profileImage');
+            $profile_Id = Profile::where('account_id','=', $id)->value('id');
+            $get_Profile = Profile::find($profile_Id);
 
-        if($get_Profile->status == 0) {
+            $profileImage = $request->file('profileImage');
 
-            $get_Profile->identityNumber = $request->nic;
-            $get_Profile->gender = $request->gender;
-            $get_Profile->status = 1;
+            if($get_Profile->status == 0) {
 
-            $update_myProfile = $get_Profile->update();
+                $get_Profile->identityNumber = $request->nic;
+                $get_Profile->gender = $request->gender;
+                $get_Profile->status = 1;
 
-            if($update_myProfile) {
+                $update_myProfile = $get_Profile->update();
 
-                if ($request->hasFile('profileImage'))
-                {
-                    $addFile = Account::find($id);
-                    $directory = '/profile_images/';
-                    $getImageUrl = Fileupload::singleUploadFile($profileImage, $profile_Id, $directory);
-                    $addFile->image = $getImageUrl;
-                    $saveImage = $addFile->update();
-                    if($saveImage) {
-                        return back()->with('success_msg', 'Profile has been updated');
+                if($update_myProfile) {
+
+                    if ($request->hasFile('profileImage'))
+                    {
+                        $addFile = Account::find($id);
+                        $directory = '/profile_images/';
+                        $getImageUrl = Fileupload::singleUploadFile($profileImage, $profile_Id, $directory);
+                        $addFile->image = $getImageUrl;
+                        $saveImage = $addFile->update();
+                        if($saveImage) {
+                            return back()->with('success_msg', 'Profile has been updated');
+                        }
                     }
+
                 }
 
             }
 
-        }
-
-        if ($request->hasFile('profileImage'))
-        {
-            $addFile = Account::find($id);
-            $directory = '/profile_images/';
-            $getImageUrl = Fileupload::singleUploadFile($profileImage, $profile_Id, $directory);
-            $addFile->image = $getImageUrl;
-            $saveImage = $addFile->update();
-            if($saveImage) {
-                return back()->with('success_msg', 'Profile picture has been updated');
+            if ($request->hasFile('profileImage'))
+            {
+                $addFile = Account::find($id);
+                $directory = '/profile_images/';
+                $getImageUrl = Fileupload::singleUploadFile($profileImage, $profile_Id, $directory);
+                $addFile->image = $getImageUrl;
+                $saveImage = $addFile->update();
+                if($saveImage) {
+                    return back()->with('success_msg', 'Profile picture has been updated');
+                }
             }
+
         }
-
-
 
     }
 }

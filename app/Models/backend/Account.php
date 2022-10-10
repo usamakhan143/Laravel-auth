@@ -10,12 +10,15 @@ class Account extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function roles()
-    {
+    public function roles() {
     	return $this->belongsToMany('App\Models\backend\Role','account_roles');
     }
 
     public function profile() {
     	return $this->hasOne('App\Models\backend\Profile','account_id');
+    }
+
+    public function shifts() {
+    	return $this->belongsToMany('App\Models\attendance\Shift','account_shifts');
     }
 }

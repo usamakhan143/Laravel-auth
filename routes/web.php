@@ -71,6 +71,18 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     // Profile
     Route::get('/profile/{id}', 'Auth\ProfileController@getProfile')->name('account.profile');
     Route::put('/profile/{id}', 'Auth\ProfileController@updateMyProfile')->name('update.profile');
+
+
+    // Attendance
+    Route::get('/shifts', 'attendance\ShiftController@allShifts')->name('shifts.index');
+    // Add Shift
+    Route::get('/add-shift', 'attendance\ShiftController@addShift')->name('shift.create');
+    Route::post('/add-shift', 'attendance\ShiftController@shiftStore')->name('shift.store');
+    // Edit Shift
+    Route::get('/edit-shift/{id}', 'attendance\ShiftController@shiftEdit')->name('shift.edit');
+    Route::put('/edit-shift/{id}', 'attendance\ShiftController@shiftUpdate')->name('shift.update');
+    // Delete Shift
+    Route::get('delete-shift/{id}', 'attendance\ShiftController@shiftDelete')->name('shift.destroy');
 });
 
 
