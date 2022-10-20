@@ -106,6 +106,48 @@
 			            	</div>
 			            </div>
 
+						<div class="col-lg-3 pt-4 pb-4">
+			            	<h5>Dashboard Panel <span class="text-danger">*</span></h5>
+			            	<div class="demo-checkbox">
+			            		
+			            		@foreach($permissions as $detail)
+			            			@if($detail->for == 'dashboard-panel')
+										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}">
+										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
+									@endif
+								@endforeach
+
+			            	</div>
+			            </div>
+
+						<div class="col-lg-3 pt-4 pb-4">
+			            	<h5>Attendance <span class="text-danger">*</span></h5>
+			            	<div class="demo-checkbox">
+			            		
+			            		@foreach($permissions as $detail)
+			            			@if($detail->for == 'attendance_post-type')
+										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}">
+										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
+									@endif
+								@endforeach
+
+			            	</div>
+			            </div>
+
+						<div class="col-lg-3 pt-4 pb-4">
+			            	<h5>Network <span class="text-danger">*</span></h5>
+			            	<div class="demo-checkbox">
+			            		
+			            		@foreach($permissions as $detail)
+			            			@if($detail->for == 'networks_post-type')
+										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}">
+										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
+									@endif
+								@endforeach
+
+			            	</div>
+			            </div>
+
 			            <div class="col-lg-3 pt-4 pb-4">
 			            	<h5>Other Permissions <span class="text-danger">*</span></h5>
 			            	<div class="demo-checkbox">

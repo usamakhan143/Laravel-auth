@@ -10,7 +10,7 @@
           </a>
         </li>
 
-        @can('shift.view', Auth::user())
+        @can('AttendanceRoot.link', Auth::user())
           <li class="treeview">
             <a href="{{-- route('') --}}">
               <i class="fa fa-calendar"></i>
@@ -20,6 +20,7 @@
               @can('shift.view', Auth::user())
                 <li><a href="{{ route('shifts.index') }}"><i class="fa fa-genderless"></i>Shifts</a></li>
               @endcan
+                <li><a href="{{ route('mark.in') }}"><i class="fa fa-genderless"></i>Check IN</a></li>
               {{-- @can('', Auth::user())
                 <li><a href=""><i class="fa fa-genderless"></i>Add new</a></li>
               @endcan --}}
@@ -36,7 +37,9 @@
               @can('settings.view', Auth::user())
                 <li><a href="{{-- route('setings') --}}"><i class="fa fa-genderless"></i>Configurations</a></li>
               @endcan
-
+              {{-- @can('settings.view', Auth::user()) --}}
+                <li><a href="{{ route('network.index') }}"><i class="fa fa-genderless"></i>Network</a></li>
+              {{-- @endcan --}}
               @can('accounts.chgPassword', Auth::user())
                 <li><a href="{{ route('change.pass', Auth::user()->id) }}"><i class="fa fa-genderless"></i>Change Password</a></li>
               @endcan

@@ -42,12 +42,13 @@
 						<div class="controls">
 							<select name="per_for" class="form-control">
 								<option value="">Select Permission for</option>
-								<option value="posttype_post-type">New Post-type</option>
+								<option value="attendance_post-type">Attendance</option>
 								<option value="users_post-type">Users</option>
 								<option value="roles_post-type">Roles</option>
 								<option value="permissions_post-type">Permissions</option>
 								<option value="shifts_post-type">Shifts</option>
 								<option value="dashboard-panel">Dashboard Panel</option>
+								<option value="networks_post-type">Networks</option>
 								<option value="other_post-type">Other</option>
 							</select>
 						</div>

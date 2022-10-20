@@ -43,6 +43,10 @@
 								<select name="per_for" class="form-control">
 									<option value="">Select Permission for</option>
 
+									<option value="attendance_post-type" <?php if ($peredit->for == 'attendance_post-type') {
+										echo "selected";
+									}  ?>>Attendance</option>
+
 									<option value="posttype_post-type" <?php if ($peredit->for == 'posttype_post-type') {
 										echo "selected";
 									}  ?>>Parking Slots</option>
@@ -66,6 +70,10 @@
 									<option value="dashboard-panel" <?php if ($peredit->for == 'dashboard-panel') {
 										echo "selected";
 									}  ?>>Dashboard Panel</option>
+
+									<option value="networks_post-type" <?php if ($peredit->for == 'networks_post-type') {
+										echo "selected";
+									}  ?>>Networks</option>
 
 									<option value="other_post-type" <?php if ($peredit->for == 'other_post-type') {
 										echo "selected";

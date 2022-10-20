@@ -73,7 +73,7 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     Route::put('/profile/{id}', 'Auth\ProfileController@updateMyProfile')->name('update.profile');
 
 
-    // Attendance
+    // Shift
     Route::get('/shifts', 'attendance\ShiftController@allShifts')->name('shifts.index');
     // Add Shift
     Route::get('/add-shift', 'attendance\ShiftController@addShift')->name('shift.create');
@@ -83,6 +83,22 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     Route::put('/edit-shift/{id}', 'attendance\ShiftController@shiftUpdate')->name('shift.update');
     // Delete Shift
     Route::get('delete-shift/{id}', 'attendance\ShiftController@shiftDelete')->name('shift.destroy');
+
+    //Attendance
+    Route::get('/attendance', 'attendance\AttendanceController@markAttendance')->name('mark.in');
+    Route::get('/check-in', 'attendance\AttendanceController@checkInStore')->name('mark.instore');
+
+    //Network
+    Route::get('/networks', 'NetworkController@allNetworks')->name('network.index');
+    // Create Network
+    Route::get('add-network', 'NetworkController@addNetwork')->name('network.create');
+    Route::post('add-network', 'NetworkController@storeNetwork')->name('network.store');
+    // Edit Network
+    Route::get('/edit-network/{id}', 'NetworkController@editNetwork')->name('network.edit');
+    Route::put('/edit-network/{id}', 'NetworkController@updateNetwork')->name('network.update');
+    // Delete Network
+    Route::get('/delete-network/{id}', 'NetworkController@destroyNetwork')->name('del.network');
+
 });
 
 

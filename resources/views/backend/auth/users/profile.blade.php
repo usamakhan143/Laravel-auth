@@ -15,7 +15,7 @@
                         <img id="profileImageDisplay" class="profile-user-img rounded-circle img-fluid mx-auto d-block"
                             src="{{ asset(Auth::guard('account')->user()->image) }}" />
                         <h3 class="profile-username text-center">{{ Auth::guard('account')->user()->name }}</h3>
-                        <p class="text-muted text-center">Developer</p>
+                        <p class="text-muted text-center">{{ Auth::guard('account')->user()->profile->designation }}</p>
 
                         <div class="row">
                             <div class="col-12">

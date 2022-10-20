@@ -148,9 +148,25 @@
 						</div>
 					</div>
 
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="form-group">
+								<h5>Designation <span class="text-danger">*</span></h5>
+								<div class="controls">
+									<input type="text" name="designation" class="form-control" placeholder="Enter Designation" value="{{ old('designation') }}"> 
+								</div>
+								@error('designation')
+								    <p class="validate">
+								      {{ $message }}
+								    </p>
+								@enderror
+							</div>
+						</div>
+					</div>
+
 					<div class="form-group">
 						<label>Assign Shift <span class="text-danger">*</span></label>
-						<select multiple="" name="shift[]" class="form-control">
+						<select name="shift[]" class="form-control">
 							@foreach($shifts as $shift)
 								<option id="{{ $shift->name }}" value="{{ $shift->id }}">{{ $shift->name }}</option>	
 							@endforeach

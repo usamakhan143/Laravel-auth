@@ -72,6 +72,7 @@ class AccountController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:accounts'],
                 'phone' => ['required', 'numeric'],
+                'designation' => ['required'],
                 // 'image' => ['required'],
                 // 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'role' => ['required'],
@@ -95,6 +96,7 @@ class AccountController extends Controller
                     'identityNumber' => 'NaN',
                     'hireDate' => $request->hireDate,
                     'gender' => 'NaN',
+                    'designation' => $request->designation,
                     'status' => 0,
                     'account_id' => $user->id,
                 ]);
@@ -143,6 +145,7 @@ class AccountController extends Controller
 
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255'],
+                'designation' => ['required'],
                 'phone' => ['required', 'numeric'],
 
             ]);
@@ -156,14 +159,26 @@ class AccountController extends Controller
                 // $user->image = 'backend/images/profile.png';
                 $user->phone = $request->phone;
                 $user->status = $request->status ?? 0;
-                $user->update();
+                $updated = $user->update();
+
+                if($updated) {
+                    $user->Profile()->update([
+                        'designation' => $request->designation
+                    ]);
+                }
             } else {
                 $user->name = $request->name;
                 $user->email = $request->email;
                 // $user->image = 'backend/images/profile.png';
                 $user->phone = $request->phone;
                 $user->status = $request->status ?? 0;
-                $user->update();
+                $updated = $user->update();
+
+                if($updated) {
+                    $user->Profile()->update([
+                        'designation' => $request->designation
+                    ]);
+                }
             }
 
             $user->shifts()->sync($request->shift);

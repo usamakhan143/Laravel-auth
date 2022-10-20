@@ -47,7 +47,16 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('shift.update', 'App\Policies\ShiftPolicy@update');
         Gate::define('shift.delete', 'App\Policies\ShiftPolicy@delete');
 
+        // Attendance
+        Gate::define('AttendanceRoot.link', 'App\Policies\AttendancePolicy@attendanceLink');
+
         // Main Dashboard Panel
         Gate::define('employees', 'App\Policies\DashboardpagePolicy@viewEmp');
+
+        // Network
+        Gate::define('networks.view', 'App\Policies\NetworkPolicy@viewAll');
+        Gate::define('networks.create', 'App\Policies\NetworkPolicy@create');
+        Gate::define('networks.update', 'App\Policies\NetworkPolicy@update');
+        Gate::define('networks.delete', 'App\Policies\NetworkPolicy@delete');
     }
 }
