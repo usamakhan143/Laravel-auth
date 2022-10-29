@@ -21,14 +21,14 @@
             {{-- box-header  --}}
             <div class="box-body">
               <table id="example" class="table table-bordered table-hover display nowrap margin-top-10 table-responsive" cellspacing="0" width="100%">
-				<thead style="background-color: #3644AF">
+				<thead style="background-color: #757ec8">
 					<tr>
 						<th>S.NO</th>
 						<th style="width: 600px">Name</th>
 						<th>Action</th>
 					</tr>
 				</thead>
-				<tfoot style="background-color: #3644AF">
+				<tfoot style="background-color: #757ec8">
 					<tr>
 						<th>S.NO</th>
 						<th style="width: 600px">Name</th>

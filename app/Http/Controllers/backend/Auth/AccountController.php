@@ -50,7 +50,7 @@ class AccountController extends Controller
         if(Auth::user()->can('accounts.create')) {
 
             $roles = Role::where([['id', '<>', 1], ['id', '<>', 2]])->get();
-            $shifts = Shift::get();
+            $shifts = Shift::where('status', 1)->get();
             return view('backend.auth.users.create', compact('roles', 'shifts'));
 
         }
@@ -123,7 +123,7 @@ class AccountController extends Controller
             $user = Account::find($id);
             $roles = role::where('id', '<>', 1)->get();
             $user_role = $user->roles()->pluck('role_id')->toArray();
-            $shifts = Shift::get();
+            $shifts = Shift::where('status', 1)->get();
             $user_shift = $user->shifts()->pluck('shift_id')->toArray();
             return view('backend.auth.users.edit', compact('user', 'roles', 'user_role', 'shifts', 'user_shift'));
 
@@ -203,6 +203,7 @@ class AccountController extends Controller
             $del = Account::find($id);
             Account_role::where('account_id', '=', $id)->delete();
             Profile::where('account_id', '=', $id)->delete();
+            Shift::where('account_id', '=', $id)->delete();
 
             $del->delete();
 

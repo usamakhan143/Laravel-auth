@@ -21,4 +21,8 @@ class Account extends Authenticatable
     public function shifts() {
     	return $this->belongsToMany('App\Models\attendance\Shift','account_shifts');
     }
+
+    public function attendances() {
+        return $this->hasMany('App\Models\attendance\Attendance','account_id', 'id');
+    }
 }

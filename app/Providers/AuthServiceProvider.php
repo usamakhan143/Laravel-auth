@@ -52,6 +52,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Main Dashboard Panel
         Gate::define('employees', 'App\Policies\DashboardpagePolicy@viewEmp');
+        Gate::define('employees.insideoffice', 'App\Policies\DashboardpagePolicy@viewAttendance');
 
         // Network
         Gate::define('networks.view', 'App\Policies\NetworkPolicy@viewAll');

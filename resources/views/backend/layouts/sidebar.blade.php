@@ -20,7 +20,8 @@
               @can('shift.view', Auth::user())
                 <li><a href="{{ route('shifts.index') }}"><i class="fa fa-genderless"></i>Shifts</a></li>
               @endcan
-                <li><a href="{{ route('mark.in') }}"><i class="fa fa-genderless"></i>Check IN</a></li>
+                <li><a href="{{ route('mark.in') }}"><i class="fa fa-genderless"></i>Mark now</a></li>
+              
               {{-- @can('', Auth::user())
                 <li><a href=""><i class="fa fa-genderless"></i>Add new</a></li>
               @endcan --}}
@@ -37,9 +38,9 @@
               @can('settings.view', Auth::user())
                 <li><a href="{{-- route('setings') --}}"><i class="fa fa-genderless"></i>Configurations</a></li>
               @endcan
-              {{-- @can('settings.view', Auth::user()) --}}
+              @can('networks.view', Auth::user())
                 <li><a href="{{ route('network.index') }}"><i class="fa fa-genderless"></i>Network</a></li>
-              {{-- @endcan --}}
+              @endcan
               @can('accounts.chgPassword', Auth::user())
                 <li><a href="{{ route('change.pass', Auth::user()->id) }}"><i class="fa fa-genderless"></i>Change Password</a></li>
               @endcan
@@ -99,13 +100,13 @@
         @endcan
 
         <li class="treeview">
-            <a href="{{-- route('logout') --}}"
+            <a href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                 <i class="fa fa-power-off"></i> <span>Sign out</span>
             </a>
 
-            <form id="logout-form" action="{{-- route('logout') --}}" method="POST" class="d-none">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
         </li>

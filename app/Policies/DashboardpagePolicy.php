@@ -16,6 +16,13 @@ class DashboardpagePolicy
     
     }
 
+    // Present Employee
+    public function viewAttendance(Account $user) {
+
+        return $this->getPermissions($user, 'Employee-attendance-admin-view');
+    
+    }
+
      //Main Function for all the policies
      protected function getPermissions($modelName, $permission_name)
      {

@@ -106,7 +106,7 @@ class NetworkController extends Controller
         if(Auth::user()->can('networks.update')) {
 
             $this->validate($request, [
-                'name' => 'required|max:50|unique:cnetworks',
+                'name' => 'required|max:50',
                 'ip' => 'required',
                 'mac' => 'required'
             ]);

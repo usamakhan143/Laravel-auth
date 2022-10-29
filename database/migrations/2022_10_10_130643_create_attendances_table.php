@@ -27,6 +27,7 @@ class CreateAttendancesTable extends Migration
             $table->string('endTime');
             $table->integer('workingHours');
             $table->integer('isOvertime');
+            $table->bigInteger('over_time');
             $table->integer('account_id');
             $table->integer('department_id');
             $table->integer('team_id');

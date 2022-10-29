@@ -39,6 +39,12 @@ class ProfileController extends Controller
 
         if(Auth::user()->can('profile.view')) {
 
+            $this->validate($request, [
+
+                'profileImage' => ['mimes:webp','dimensions:max_width=500,max_height=500,min_width=500,min_height=500']
+
+            ]);
+
             $profile_Id = Profile::where('account_id','=', $id)->value('id');
             $get_Profile = Profile::find($profile_Id);
 
@@ -65,6 +71,8 @@ class ProfileController extends Controller
                             return back()->with('success_msg', 'Profile has been updated');
                         }
                     }
+
+                    return back()->with('success_msg', 'Profile has been updated without profile picture');
 
                 }
 

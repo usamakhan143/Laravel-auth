@@ -87,6 +87,7 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     //Attendance
     Route::get('/attendance', 'attendance\AttendanceController@markAttendance')->name('mark.in');
     Route::get('/check-in', 'attendance\AttendanceController@checkInStore')->name('mark.instore');
+    Route::get('/check-out', 'attendance\AttendanceController@checkOut')->name('mark.outstore');
 
     //Network
     Route::get('/networks', 'NetworkController@allNetworks')->name('network.index');

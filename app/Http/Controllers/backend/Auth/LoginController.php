@@ -85,11 +85,16 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         $check_status = Account::where('email', $request->email)->first();
-        if ($check_status->status == 0) {
-            return ['email'=>'pending', 'password'=>'Please wait for your account activation when this is activated then please try again'];
+        if($check_status != null) {
+            if ($check_status->status == 0) {
+                return ['email'=>'pending', 'password'=>'Please wait for your account activation when this is activated then please try again'];
+            }
+            else {
+                return ['email'=>$request->email, 'password'=>$request->password, 'status'=> 1];
+            }
         }
         else {
-            return ['email'=>$request->email, 'password'=>$request->password, 'status'=> 1];
+            return ['email'=>'pending', 'password'=>'I think the Email address you are using is not yours'];
         }
         //return $request->only($this->username(), 'password');
     }

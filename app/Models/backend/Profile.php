@@ -14,6 +14,7 @@ class Profile extends Model
         'identityNumber',
         'hireDate',
         'gender',
+        'designation',
         'status',
         'account_id'
         
