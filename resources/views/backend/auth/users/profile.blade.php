@@ -13,23 +13,37 @@
                 <div class="box">
                     <div class="box-body box-profile">
                         <img id="profileImageDisplay" class="profile-user-img rounded-circle img-fluid mx-auto d-block"
-                            src="{{ asset(Auth::guard('account')->user()->image) }}" />
+                            @if (request()->getHttpHost() == '127.0.0.1:8000') src="{{ asset(Auth::guard('account')->user()->image) }}"
+                        @else
+                        src="{{ asset('storage/' . Auth::guard('account')->user()->image) }}" @endif />
                         <h3 class="profile-username text-center">{{ Auth::guard('account')->user()->name }}</h3>
                         <p class="text-muted text-center">{{ Auth::guard('account')->user()->profile->designation }}</p>
 
                         <div class="row">
                             <div class="col-12">
                                 <div class="profile-user-info">
-                                    <b><p>Email address:</p></b>
+                                    <b>
+                                        <p>Email address:</p>
+                                    </b>
                                     <h6 class="margin-bottom">{{ Auth::guard('account')->user()->email }}</h6>
-                                    <b><p>Phone:</p></b>
+                                    <b>
+                                        <p>Phone:</p>
+                                    </b>
                                     <h6 class="margin-bottom">{{ Auth::guard('account')->user()->phone }}</h6>
-                                    <b><p>Hired on:</p></b>
-                                    <h6 class="margin-bottom">{{ $get_Profile->hireDate }}</h6>
-                                    @if($get_Profile->status > 0)
-                                        <b><p>C-NIC:</p></b>
+                                    @if (Auth::guard('account')->user()->id != 16 && Auth::guard('account')->user()->id != 19)
+                                        <b>
+                                            <p>Hired on:</p>
+                                        </b>
+                                        <h6 class="margin-bottom">{{ $get_Profile->hireDate }}</h6>
+                                    @endif
+                                    @if ($get_Profile->status > 0)
+                                        <b>
+                                            <p>C-NIC:</p>
+                                        </b>
                                         <h6 class="margin-bottom">{{ $get_Profile->identityNumber }}</h6>
-                                        <b><p>Gender:</p></b>
+                                        <b>
+                                            <p>Gender:</p>
+                                        </b>
                                         <h6 class="margin-bottom">{{ $get_Profile->gender }}</h6>
                                     @endif
                                 </div>
@@ -59,11 +73,12 @@
                         @endif
                         <div class="row">
                             <div class="col">
-                                <form action="{{ route('update.profile', Auth::guard('account')->user()->id) }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('update.profile', Auth::guard('account')->user()->id) }}"
+                                    method="post" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
 
-                                    @if($get_Profile->status == 0)
+                                    @if ($get_Profile->status == 0)
                                         <div class="form-group">
                                             <h5>CNIC <span class="text-danger">*</span></h5>
                                             <div class="controls">

@@ -2,6 +2,19 @@
 
 @section('Page-Heading', 'Edit Network')
 
+@section('backend_head')
+
+    {{-- Select2 --}}
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendor_components/select2/dist/css/select2.min.css') }}">
+
+    {{-- Select2  --}}
+    <link rel="stylesheet" href="{{ asset('backend/vendor_components/select2/dist/css/select2.min.css') }}">
+
+    {{-- Theme style --}}
+    <link rel="stylesheet" href="{{ asset('backend/css/master_style.css') }}">
+
+@endsection
+
 @section('content')
 
     <!-- Basic Forms -->
@@ -69,6 +82,17 @@
                             </div>
 
                             <div class="form-group">
+                                <label>User</label>
+                                <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                    tabindex="-1" aria-hidden="true" name="user">
+                                    <option>Select User</option>
+                                    @foreach ($users as $user)
+                                        <option {{($user->id == $network_edit->account_id)? 'selected' : ''}} value="{{ $user->id }}">{{ $user->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="form-group">
                                     <h5>Status <span class="text-danger">*</span></h5>
                                     <div class="controls">
@@ -103,5 +127,14 @@
         </div>
         <!-- /.box -->
     </div>
+
+@endsection
+
+@section('scripts')
+
+    <script src="{{ asset('backend/assets/vendor_components/select2/dist/js/select2.full.js') }}"></script>
+
+    <script src="{{ asset('backend/js/pages/advanced-form-element.js') }}"></script>
+
 
 @endsection

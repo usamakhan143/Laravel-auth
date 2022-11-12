@@ -66,6 +66,10 @@
                             </td>
                             @can('accounts.update', Auth::user())
                                 <td>
+                                    <a href="{{ route('show.account', $detail->id) }}"
+                                        class="btn btn-block btn-primary btn-xs">
+                                        <i class="fa fa-edit"></i> Show
+                                    </a>
 
                                     <a href="{{ route('accounts.edit', $detail->id) }}"
                                         class="btn btn-block btn-success btn-xs">

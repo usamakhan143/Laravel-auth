@@ -85,7 +85,7 @@ class AccountController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = bcrypt(123456789); // bcrypt($request->password);
-            $user->image = 'backend/images/profile.png';
+            $user->image = 'profile_images/profile.png';
             $user->phone = $request->phone;
             $user->status = $request->status;
             $save_user = $user->save();

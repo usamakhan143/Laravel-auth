@@ -1,12 +1,12 @@
 <footer class="main-footer">
-	<!--<div class="row">-->
-	<!--	<div class="col-sm-10">-->
-	<!--		Powered by VISECH | &copy; {{date('Y')}} <a href=""> OLLO</a>. All Rights Reserved.-->
-	<!--	</div>-->
-	<!--	<div class="col-sm-2">-->
-	<!--		<a href="https://join.skype.com/invite/Wgy66gXXgjtg" target="_blank">Developed by USAMA</a>-->
-	<!--	</div>-->
-	<!--</div>-->
+	<div class="row">
+		<div class="col-sm-10">
+			Powered by VISECH | &copy; {{date('Y')}} <a> HRM</a>. All Rights Reserved.
+		</div>
+		<div class="col-sm-2">
+			<a target="_blank">Developed by USAMA</a>
+		</div>
+	</div>
 </footer>
 
 

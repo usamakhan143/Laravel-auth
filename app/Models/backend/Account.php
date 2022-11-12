@@ -25,4 +25,8 @@ class Account extends Authenticatable
     public function attendances() {
         return $this->hasMany('App\Models\attendance\Attendance','account_id', 'id');
     }
+    
+    public function networks() {
+        return $this->hasMany('App\Models\Cnetwork','account_id', 'id');
+    }
 }

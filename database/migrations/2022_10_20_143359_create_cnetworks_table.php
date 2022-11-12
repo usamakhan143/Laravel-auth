@@ -18,6 +18,7 @@ class CreateCnetworksTable extends Migration
             $table->string('name');
             $table->string('ip');
             $table->string('mac');
+            $table->bigInteger('account_id');
             $table->string('status');
             $table->timestamps();
         });

@@ -38,57 +38,7 @@
             </div>
         @endcan
 
-        @can('employees.insideoffice', Auth::user())
-            <div class="col-md-6">
-                @if($check_record > 0)
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h5 class="box-title">Today's Attendance</h5>
-                    </div>
-                    <div class="box-body p-0">
-                        <div class="media-list media-list-hover media-list-divided">
-                            @foreach ($who_is_inside as $employee_inside)
-                                <a class="media media-single" href="#">
-                                    <span class="title">{{ $employee_inside->account->name }}</span>
-
-                                    {{-- Start Time --}}
-                                    <span class="badge badge-pill badge-info">ST:
-                                        {{ date('H:i', strtotime($employee_inside->startTime)) }}</span>
-
-                                    {{-- End Time --}}
-                                    @if ($employee_inside->endTime != 'NaN')
-                                        <span class="badge badge-pill badge-primary">ET:
-                                            {{ date('H:i', strtotime($employee_inside->endTime)) }}</span>
-                                    @endif
-
-                                    {{-- Late --}}
-                                    @if ($employee_inside->isLate > 0)
-                                        <span class="badge badge-pill badge-danger">LATE</span>
-                                    @endif
-
-                                    {{-- Half day --}}
-                                    @if ($employee_inside->isHalfDay > 0)
-                                        <span class="badge badge-pill badge-warning">HALF DAY</span>
-                                    @endif
-
-                                    {{-- Over time --}}
-                                    @if ($employee_inside->isOvertime > 0)
-                                        <span class='badge badge-pill badge-purple'>OVERTIME</span>
-                                    @endif
-
-                                    @if ($employee_inside->atOffice < 1)
-                                        <span class="badge badge-pill badge-info">REMOTE</span>
-                                    @else
-                                        <span class='badge badge-pill badge-warning'>OFFICE</span>
-                                    @endif
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                @endif
-            </div>
-        @endcan
+        
         {{-- <div class="col-xl-3 col-md-6 col-6">
       <!-- small box -->
       <div class="small-box bg-success">
@@ -136,9 +86,10 @@
     <!-- ./col --> --}}
     </div>
 
-    {{-- <div class="row">
+    <div class="row">
         @can('employees.insideoffice', Auth::user())
             <div class="col-md-6">
+                @if($check_record > 0)
                 <div class="box">
                     <div class="box-header with-border">
                         <h5 class="box-title">Today's Attendance</h5>
@@ -149,29 +100,29 @@
                                 <a class="media media-single" href="#">
                                     <span class="title">{{ $employee_inside->account->name }}</span>
 
-                                    {{-- Start Time -}}
+                                    {{-- Start Time --}}
                                     <span class="badge badge-pill badge-info">ST:
                                         {{ date('H:i', strtotime($employee_inside->startTime)) }}</span>
 
-                                    {{-- End Time -}}
+                                    {{-- End Time --}}
                                     @if ($employee_inside->endTime != 'NaN')
                                         <span class="badge badge-pill badge-primary">ET:
                                             {{ date('H:i', strtotime($employee_inside->endTime)) }}</span>
                                     @endif
 
-                                    {{-- Late -}}
+                                    {{-- Late --}}
                                     @if ($employee_inside->isLate > 0)
                                         <span class="badge badge-pill badge-danger">LATE</span>
                                     @endif
 
-                                    {{-- Half day -}}
+                                    {{-- Half day --}}
                                     @if ($employee_inside->isHalfDay > 0)
                                         <span class="badge badge-pill badge-warning">HALF DAY</span>
                                     @endif
 
-                                    {{-- Over time -}}
+                                    {{-- Over time --}}
                                     @if ($employee_inside->isOvertime > 0)
-                                        <span class='badge badge-pill badge-purple'>OVERTIME</span>
+                                        <span class='badge badge-pill badge-purple' title="{{number_format((float) $employee_inside->over_time / 60, 1, '.', '')}}hrs">OVERTIME</span>
                                     @endif
 
                                     @if ($employee_inside->atOffice < 1)
@@ -184,8 +135,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         @endcan
-    </div> --}}
+    </div>
 
 @endsection

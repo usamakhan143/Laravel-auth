@@ -6,6 +6,7 @@ use App\Helpers\Fileupload;
 use App\Http\Controllers\Controller;
 use App\Models\backend\Account;
 use App\Models\backend\Profile;
+use App\Models\Cnetwork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,12 +40,22 @@ class ProfileController extends Controller
 
         if(Auth::user()->can('profile.view')) {
 
-            $this->validate($request, [
+            if($request->nic) {
+                $this->validate($request, [
 
-                'profileImage' => ['mimes:webp','dimensions:max_width=500,max_height=500,min_width=500,min_height=500']
+                    'nic' => ['required'],
+                    'profileImage' => ['mimes:webp','dimensions:max_width=500,max_height=500,min_width=500,min_height=500'],
+                    'gender' => ['required']
 
-            ]);
+                ]);
+            }
+            else{
+                $this->validate($request, [
 
+                    'profileImage' => ['mimes:webp','dimensions:max_width=500,max_height=500,min_width=500,min_height=500']
+
+                ]);
+            }
             $profile_Id = Profile::where('account_id','=', $id)->value('id');
             $get_Profile = Profile::find($profile_Id);
 
@@ -60,7 +71,15 @@ class ProfileController extends Controller
 
                 if($update_myProfile) {
 
-                    if ($request->hasFile('profileImage'))
+                    $network_set = new Cnetwork();
+                    $network_set->name = 'Default';
+                    $network_set->ip = request()->ip();
+                    $network_set->mac = exec('getmac') ?? 'NaN';
+                    $network_set->account_id = Auth::guard('account')->user()->id;
+                    $network_set->status = 1;
+                    $network_set->save();
+
+                    if ($profileImage)
                     {
                         $addFile = Account::find($id);
                         $directory = '/profile_images/';
@@ -78,7 +97,7 @@ class ProfileController extends Controller
 
             }
 
-            if ($request->hasFile('profileImage'))
+            if ($profileImage)
             {
                 $addFile = Account::find($id);
                 $directory = '/profile_images/';
@@ -92,5 +111,12 @@ class ProfileController extends Controller
 
         }
 
+    }
+
+    // Account Details
+    public function showAccount($id) {
+        $getAccount = Account::find($id);
+        dd($getAccount);
+        return view('backend.auth.users.show');
     }
 }

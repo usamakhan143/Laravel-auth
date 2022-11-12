@@ -29,7 +29,7 @@ class HomeController extends Controller
                 'roles', function($q){
                     $q->where('name', 'Employee');
                 }
-            )->get();
+            )->get(['email']);
 
             $numbers_of_emp = count($employees);
 

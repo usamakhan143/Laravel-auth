@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Account;
 use App\Models\Cnetwork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +43,13 @@ class NetworkController extends Controller
     public function addNetwork() {
 
         if(Auth::user()->can('networks.create')) {
-            return view('backend.network.create');
+            $users = Account::whereHas(
+                'roles', function($q){
+                    $q->where('name', 'Employee');
+                }
+            )->get();
+            return view('backend.network.create', compact('users'));
+
         }
         else {
             return redirect()->route('dashboard.home');
@@ -55,9 +62,10 @@ class NetworkController extends Controller
         if(Auth::user()->can('networks.create')) {
 
             $this->validate($request, [
-                'name' => 'required|max:50|unique:cnetworks',
+                'name' => 'required|max:50',
                 'ip' => 'required',
-                'mac' => 'required|unique:cnetworks'
+                'user' => 'required',
+                'mac' => 'required'
             ]);
 
             $network = new Cnetwork();
@@ -65,6 +73,7 @@ class NetworkController extends Controller
             $network->name = $request->name;
             $network->ip = $request->ip;
             $network->mac = $request->mac;
+            $network->account_id = $request->user;
             $network->status = $request->status ?? 0;
 
             $save = $network->save();
@@ -89,7 +98,12 @@ class NetworkController extends Controller
         if(Auth::user()->can('networks.update')) {
 
             $network_edit = Cnetwork::find($id);
-            return view('backend.network.edit', compact('network_edit'));
+            $users = Account::whereHas(
+                'roles', function($q){
+                    $q->where('name', 'Employee');
+                }
+            )->get();
+            return view('backend.network.edit', compact('network_edit', 'users'));
         
         }
         else {
@@ -108,6 +122,7 @@ class NetworkController extends Controller
             $this->validate($request, [
                 'name' => 'required|max:50',
                 'ip' => 'required',
+                'user' => 'required',
                 'mac' => 'required'
             ]);
 
@@ -116,6 +131,7 @@ class NetworkController extends Controller
             $network_edit->name = $request->name;
             $network_edit->ip = $request->ip;
             $network_edit->mac = $request->mac;
+            $network_edit->account_id = $request->user;
             $network_edit->status = $request->status ?? 0;
 
             $save = $network_edit->update();

@@ -17,11 +17,6 @@ Route::get('/', function () {
     return redirect()->route('company.login');
 });
 
-
-Route::get('/profile', function () {
-    return view('backend.auth.users.profile');
-});
-
 Auth::routes();
 
 //Custom Authentication Sign in routes
@@ -71,6 +66,8 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     // Profile
     Route::get('/profile/{id}', 'Auth\ProfileController@getProfile')->name('account.profile');
     Route::put('/profile/{id}', 'Auth\ProfileController@updateMyProfile')->name('update.profile');
+    // Specific Account Page
+    Route::get('/account/{id}', 'Auth\ProfileController@showAccount')->name('show.account'); 
 
 
     // Shift

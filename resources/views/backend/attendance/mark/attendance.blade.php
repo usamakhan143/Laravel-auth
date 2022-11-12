@@ -14,7 +14,6 @@
         <p class="alert alert-danger fade-message">{{ Session::get('error_msg') }}</p>
     @endif
     <div class="container">
-
         @if (Auth::guard('account')->user()->profile->status > 0)
             <div class="row">
                 <div class="col-md-4">
@@ -60,7 +59,7 @@
                             @endif
                         @else
                             <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="fa fa-thumbs-up"></i></span></a>
+                                <span class="info-box-icon bg-green"><i class="fa fa-thumbs-up"></i></span></a>
                                 <div class="info-box-content">
                                     <span class="info-box-number">Good Bye!<small></small></span>
                                     <span class="info-box-text"><b>Have a great day</b></span>
@@ -82,25 +81,35 @@
                                             class="badge badge-pill badge-primary">{{ date('H:i', strtotime($get_my_attendance->startTime)) }}</span>
                                     </a>
 
-                                    <a class="media media-single" href="#">
-                                        <span class="title">End Time</span>
-                                        <span class="badge badge-pill badge-info">
-                                            @if ($get_my_attendance->endTime != 'NaN')
+                                    @if ($get_my_attendance->endTime != 'NaN')
+                                        <a class="media media-single" href="#">
+                                            <span class="title">End Time</span>
+                                            <span class="badge badge-pill badge-info">
                                                 {{ date('H:i', strtotime($get_my_attendance->endTime)) }}
-                                            @else
-                                                NaN
-                                            @endif
-                                        </span>
-                                    </a>
+                                            </span>
+                                        </a>
+                                    @endif
+                                    
+                                    @if($get_my_attendance->isLate > 0)
+                                        <a class="media media-single" href="#">
+                                            <span class="title">Late</span>
+                                            <span class="badge badge-pill badge-danger">YES</span>
+                                        </a>
+                                    @endif
 
-                                    <a class="media media-single" href="#">
-                                        <span class="title">Late</span>
-                                        <span class="badge badge-pill badge-danger">
+                                    @if($get_my_attendance->isHalfDay > 0)
+                                        <a class="media media-single" href="#">
+                                            <span class="title">Half day</span>
+                                            <span class="badge badge-pill badge-danger">Yes</span>
+                                        </a>
+                                    @endif
 
-                                            {{ $get_my_attendance->isLate < 1 ? 'ON TIME' : 'YES' }}
-
-                                        </span>
-                                    </a>
+                                    @if($get_my_attendance->over_time > 0)
+                                        <a class="media media-single" href="#">
+                                            <span class="title">Over time</span>
+                                            <span class="badge badge-pill bg-olive">{{number_format((float) $get_my_attendance->over_time / 60, 1, '.', '')}} hrs</span>
+                                        </a>
+                                    @endif
 
                                     <a class="media media-single" href="#">
                                         <span class="title">Working From</span>
@@ -130,6 +139,7 @@
                                 cellspacing="0" width="100%">
                                 <thead style="background-color: #757ec8;">
                                     <tr>
+                                        <th>Date</th>
                                         <th>ST</th>
                                         <th>ET</th>
                                         <th>Late</th>
@@ -137,11 +147,11 @@
                                         <th>WH</th>
                                         <th>OT</th>
                                         <th>Where</th>
-                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tfoot style="background-color: #757ec8;">
                                     <tr>
+                                        <th>Date</th>
                                         <th>ST</th>
                                         <th>ET</th>
                                         <th>Late</th>
@@ -149,12 +159,12 @@
                                         <th>WH</th>
                                         <th>OT</th>
                                         <th>Where</th>
-                                        <th>Date</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
                                     @foreach ($get_my_all_attendance as $detail)
                                         <tr>
+                                            <td>{{ $detail->day }}/{{ $detail->month }}/{{ $detail->year }}</td>
                                             <td>{{ date('H:i', strtotime($detail->startTime)) }}</td>
                                             <td>
                                                 @if ($detail->endTime != 'NaN')
@@ -178,13 +188,13 @@
                                                     NO
                                                 @endif
                                             </td>
-                                            <td>{{ number_format((float) $detail->workingHours / 60, 0, '.', '') }} Hours
+                                            <td>{{ number_format((float) $detail->workingHours / 60, 1, '.', '') }} Hrs
                                             </td>
                                             <td>
-                                                @if ($detail->isOvertime < 1)
-                                                    NO
+                                                @if ($detail->isOvertime > 0)
+                                                    <span class='badge badge-pill badge-brown' title="{{number_format((float) $detail->over_time / 60, 1, '.', '')}} hrs">OVERTIME</span>
                                                 @else
-                                                    <span class='badge badge-pill badge-green'>OVERTIME</span>
+                                                    NO
                                                 @endif
                                             </td>
                                             <td>
@@ -194,7 +204,6 @@
                                                     <span class='badge badge-pill badge-warning'>OFFICE</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $detail->day }}/{{ $detail->month }}/{{ $detail->year }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -221,6 +230,7 @@
                             <div class="mt-20">
                                 <h3 class="text-uppercase fw-500">Alert</h3>
                                 <p>PLease activate your profile first!!!</p>
+                                <a href="{{ route('account.profile', Auth::guard('account')->user()->id) }}" class="btn btn-primary btn-lg">Activate now</a>
                             </div>
                         </div>
                     </div>
