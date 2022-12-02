@@ -74,6 +74,10 @@
 									<option value="networks_post-type" <?php if ($peredit->for == 'networks_post-type') {
 										echo "selected";
 									}  ?>>Networks</option>
+									
+									<option value="reports_post-type" <?php if ($peredit->for == 'reports_post-type') {
+										echo "selected";
+									}  ?>>Report</option>
 
 									<option value="other_post-type" <?php if ($peredit->for == 'other_post-type') {
 										echo "selected";

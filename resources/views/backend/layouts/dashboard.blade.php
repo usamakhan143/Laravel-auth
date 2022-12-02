@@ -7,137 +7,110 @@
     <div class="row">
 
         @can('employees', Auth::user())
-            <div class="col-xl-3 col-md-6 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info p-10">
-                    <div class="inner">
-                        <h3>{{ $numbers_of_emp }}</h3>
-
-                        <p>Employees</p>
+            <div class="col-xl-3 col-md-6 col-12 ">
+                <a href="{{ route('all.accounts') }}" style="color: white">
+                    <div class="box box-body bg-info">
+                        <div class="flexbox">
+                            <span class="ion ion-ios-person-outline font-size-50"></span>
+                            <span class="font-size-40 font-weight-200">{{ $numbers_of_emp }}</span>
+                        </div>
+                        <div class="text-right">Employees</div>
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <a href="{{ route('all.accounts') }}" class="small-box-footer">More info <i class="fa fa-arrow-right"></i></a>
-                </div>
+                </a>
             </div>
-
-            <div class="col-xl-3 col-md-6 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info p-10">
-                    <div class="inner">
-                        <h3>{{ $total_present }} / {{ $numbers_of_emp }}</h3>
-
-                        <p>Total Present</p>
+            <!-- /.col -->
+            <div class="col-xl-3 col-md-6 col-12 ">
+                <a href="{{ route('report.allatt') }}" style="color: white">
+                    <div class="box box-body bg-info">
+                        <div class="flexbox">
+                            <span class="ion ion-ios-copy-outline font-size-50"></span>
+                            <span class="font-size-40 font-weight-200">{{ $total_present }} / {{ $numbers_of_emp }}</span>
+                        </div>
+                        <div class="text-right">Total Present</div>
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-right"></i></a>
-                </div>
+                </a>
             </div>
+            <!-- /.col -->
         @endcan
 
-        
-        {{-- <div class="col-xl-3 col-md-6 col-6">
-      <!-- small box -->
-      <div class="small-box bg-success">
-        <div class="inner">
-          <h3>67<sup style="font-size: 20px">%</sup></h3>
+    </div>
 
-          <p>Sales Rate</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-bar-chart"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-xl-3 col-md-6 col-6">
-      <!-- small box -->
-      <div class="small-box bg-primary">
-        <div class="inner">
-          <h3>78</h3>
-
-          <p>Registrations</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-user-plus"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-xl-3 col-md-6 col-6">
-      <!-- small box -->
-      <div class="small-box bg-danger">
-        <div class="inner">
-          <h3>65</h3>
-
-          <p>New Visitors</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-pie-chart"></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col --> --}}
-    </div>
+    {{-- <div class="row">
+        @include('backend.partials.quickattendance')
+    </div> --}}
 
     <div class="row">
+
         @can('employees.insideoffice', Auth::user())
             <div class="col-md-6">
-                @if($check_record > 0)
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h5 class="box-title">Today's Attendance</h5>
-                    </div>
-                    <div class="box-body p-0">
-                        <div class="media-list media-list-hover media-list-divided">
-                            @foreach ($who_is_inside as $employee_inside)
-                                <a class="media media-single" href="#">
-                                    <span class="title">{{ $employee_inside->account->name }}</span>
+                @if ($check_record > 0)
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h5 class="box-title">Today's Attendance</h5>
+                        </div>
+                        <div class="box-body p-0">
+                            <div class="media-list media-list-hover media-list-divided">
+                                @foreach ($who_is_inside as $employee_inside)
+                                    <a class="media media-single" href="#">
+                                        <span class="title">{{ $employee_inside->account->name }}</span>
 
-                                    {{-- Start Time --}}
-                                    <span class="badge badge-pill badge-info">ST:
-                                        {{ date('H:i', strtotime($employee_inside->startTime)) }}</span>
+                                        {{-- Start Time --}}
+                                        <span class="badge badge-pill badge-info">ST:
+                                            {{ date('H:i', strtotime($employee_inside->startTime)) }}</span>
 
-                                    {{-- End Time --}}
-                                    @if ($employee_inside->endTime != 'NaN')
-                                        <span class="badge badge-pill badge-primary">ET:
-                                            {{ date('H:i', strtotime($employee_inside->endTime)) }}</span>
-                                    @endif
+                                        {{-- End Time --}}
+                                        @if ($employee_inside->endTime != 'NaN')
+                                            <span class="badge badge-pill badge-primary">ET:
+                                                {{ date('H:i', strtotime($employee_inside->endTime)) }}</span>
+                                        @endif
 
-                                    {{-- Late --}}
-                                    @if ($employee_inside->isLate > 0)
-                                        <span class="badge badge-pill badge-danger">LATE</span>
-                                    @endif
+                                        {{-- Late --}}
+                                        @if ($employee_inside->isLate > 0)
+                                            <span class="badge badge-pill badge-danger">LATE</span>
+                                        @endif
 
-                                    {{-- Half day --}}
-                                    @if ($employee_inside->isHalfDay > 0)
-                                        <span class="badge badge-pill badge-warning">HALF DAY</span>
-                                    @endif
+                                        {{-- Half day --}}
+                                        @if ($employee_inside->isHalfDay > 0)
+                                            <span class="badge badge-pill badge-warning">HALF DAY</span>
+                                        @endif
 
-                                    {{-- Over time --}}
-                                    @if ($employee_inside->isOvertime > 0)
-                                        <span class='badge badge-pill badge-purple' title="{{number_format((float) $employee_inside->over_time / 60, 1, '.', '')}}hrs">OVERTIME</span>
-                                    @endif
+                                        {{-- Over time --}}
+                                        @if ($employee_inside->isOvertime > 0)
+                                            <span class='badge badge-pill badge-purple'
+                                                title="{{ number_format((float) $employee_inside->over_time / 60, 1, '.', '') }}hrs">OVERTIME</span>
+                                        @endif
 
-                                    @if ($employee_inside->atOffice < 1)
-                                        <span class="badge badge-pill badge-info">REMOTE</span>
-                                    @else
-                                        <span class='badge badge-pill badge-warning'>OFFICE</span>
-                                    @endif
-                                </a>
-                            @endforeach
+                                        @if ($employee_inside->atOffice < 1)
+                                            <span class="badge badge-pill badge-info">REMOTE</span>
+                                        @else
+                                            <span class='badge badge-pill badge-warning'>OFFICE</span>
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endif
             </div>
         @endcan
     </div>
 
+    @if (Auth::guard('account')->user()->id != 1)
+        <div class="row">
+            <div class="col-xl-3 col-md-6 col">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="fa fa-clock"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-number">{{ Auth::guard('account')->user()->shifts[0]->name }}</span>
+                        <span class="info-box-text">My Shift</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+
+        </div>
+    @endif
 @endsection

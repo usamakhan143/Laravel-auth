@@ -54,6 +54,13 @@ Body :		Poppins, sans-serif;
 -------------------------------------------------------------------*/
 
 /*Body, layout*/
+.spinner{
+  display: none;
+}
+.anchor-links{
+    cursor: pointer;
+}
+
 .layout-boxed body, .layout-boxed html, .wrapper, body, html {
     height: 100%}
 .wrapper, body {
@@ -165,9 +172,9 @@ img {
     z-index: 800;
 }
 .main-footer {
-    background: #fff;
+    background: #3644AF;
     padding: 15px;
-    color: #455a64;
+    color: #fff;
     border-top: 1px solid #d2d6de;
 }
 .main-footer .nav{

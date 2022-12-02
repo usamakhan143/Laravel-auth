@@ -4,7 +4,7 @@
 			Powered by VISECH | &copy; {{date('Y')}} <a> HRM</a>. All Rights Reserved.
 		</div>
 		<div class="col-sm-2">
-			<a target="_blank">Developed by USAMA</a>
+			{{-- <a target="_blank">Developed by USAMA</a> --}}
 		</div>
 	</div>
 </footer>

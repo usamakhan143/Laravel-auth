@@ -68,6 +68,7 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     Route::put('/profile/{id}', 'Auth\ProfileController@updateMyProfile')->name('update.profile');
     // Specific Account Page
     Route::get('/account/{id}', 'Auth\ProfileController@showAccount')->name('show.account'); 
+    Route::get('/get-attendance/{id}', 'Auth\ProfileController@getAccountAttendance')->name('att.range.account'); 
 
 
     // Shift
@@ -81,10 +82,15 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     // Delete Shift
     Route::get('delete-shift/{id}', 'attendance\ShiftController@shiftDelete')->name('shift.destroy');
 
-    //Attendance
+    // Attendance
     Route::get('/attendance', 'attendance\AttendanceController@markAttendance')->name('mark.in');
     Route::get('/check-in', 'attendance\AttendanceController@checkInStore')->name('mark.instore');
     Route::get('/check-out', 'attendance\AttendanceController@checkOut')->name('mark.outstore');
+
+    // Attendance Report
+    Route::get('/generate-report', 'attendance\ReportController@createReport')->name('report.create');
+    Route::get('/report-generated', 'attendance\ReportController@generateReport')->name('report.generate');
+    Route::get('/all-attendance-of-'.date('M'), 'attendance\ReportController@getAttendanceReport')->name('report.allatt');
 
     //Network
     Route::get('/networks', 'NetworkController@allNetworks')->name('network.index');

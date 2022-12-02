@@ -2,6 +2,13 @@
 
 @section('Page-Heading', 'Mark Your Attendance')
 
+@section('backend_head')
+
+    {{-- Theme style --}}
+    <link rel="stylesheet" href="{{ asset('backend/css/master_style.css') }}">
+
+@endsection
+
 @section('content')
 
 
@@ -21,8 +28,8 @@
                         @if ($officeStatus > 0)
                             @if ($checkIP == true)
                                 <div class="info-box">
-                                    <a href="{{ route('mark.instore') }}"><span class="info-box-icon bg-info"><i
-                                                class="fa fa-sign-in"></i></span></a>
+                                    <a class="anchor-links" data-url="{{ route('mark.instore') }}"><span class="info-box-icon bg-info"><i
+                                                class="fa fa-sign-in punch"></i><i class="spinner fas fa-spinner fa-spin"></i></span></a>
                                     <div class="info-box-content">
                                         <span class="info-box-number">Check IN<small></small></span>
                                         <span class="info-box-text"><b>I am in Office</b></span>
@@ -35,8 +42,8 @@
                             @endif
                         @else
                             <div class="info-box">
-                                <a href="{{ route('mark.instore') }}"><span class="info-box-icon bg-orange"><i
-                                            class="fa fa-sign-in"></i></span></a>
+                                <a class="anchor-links" data-url="{{ route('mark.instore') }}"><span class="info-box-icon bg-orange"><i
+                                            class="fa fa-sign-in punch"></i><i class="spinner fas fa-spinner fa-spin"></i></span></a>
                                 <div class="info-box-content">
                                     <span class="info-box-number">Check IN<small></small></span>
                                     <span class="info-box-text"><b>I am on Remote</b></span>
@@ -47,8 +54,8 @@
                         @if ($get_out_status < 1)
                             @if ($checkIP == true)
                                 <div class="info-box">
-                                    <a href="{{ route('mark.outstore') }}"><span class="info-box-icon bg-danger"><i
-                                                class="fa fa-sign-out"></i></span></a>
+                                    <a class="anchor-links" data-url="{{ route('mark.outstore') }}"><span class="info-box-icon bg-danger"><i
+                                                class="fa fa-sign-out punch"></i><i class="spinner fas fa-spinner fa-spin"></i></span></a>
                                     <div class="info-box-content">
                                         <span class="info-box-number">Check OUT<small></small></span>
                                         <span class="info-box-text"><b>I am Signing Off now</b></span>
@@ -242,4 +249,5 @@
 
     @section('scripts')
         @include('backend.layouts.datatables')
+        <script src="{{ asset('backend/js/forms/submit.js') }}"></script>
     @endsection

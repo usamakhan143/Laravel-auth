@@ -21,9 +21,8 @@ Primary use:	Unique Admin - Responsive Admin Template
 -------------------------------------------------------------------*/
 
 /*---Skin: Blue---*/
-
 .skin-blue .main-header .navbar {
-  background-color: #fff; /* Default #1e88e5 */
+  background-color: #3644AF; /* Default #1e88e5 */
 }
 .skin-blue .main-header .navbar .nav > li > a {
   color: #3644AF;
@@ -62,12 +61,12 @@ Primary use:	Unique Admin - Responsive Admin Template
   }
 }
 .skin-blue .main-header .logo {
-  background-color: #fff;
+  background-color: #3644AF;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-blue .main-header .logo:hover {
-  background-color: #fff;
+  background-color: #3644AF;
 }
 .skin-blue .main-header li.user-header {
   background-color: #fff;
@@ -1544,7 +1543,7 @@ Primary use:	Unique Admin - Responsive Admin Template
   color: #b0b9c7;
 }
 .skin-purple-light .sidebar-menu>li:hover>a, .skin-purple-light .sidebar-menu>li.active>a{
-  color: #7460ee;
+  color: #fff;
   background: #ffffff;
 }
 .skin-purple-light .sidebar-menu > li.active > a,

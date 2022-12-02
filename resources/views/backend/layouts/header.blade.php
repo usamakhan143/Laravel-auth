@@ -3,7 +3,7 @@
     <a href="{{ route('dashboard.home') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <b class="logo-mini">
-            <span class="light-logo"><img src="{{ asset('backend/images/small-visech-dark.png') }}" alt="logo"></span>
+            <span class="light-logo"><img src="{{ asset('backend/images/small-visech-light.png') }}" alt="logo"></span>
             <span class="dark-logo"><img src="{{ asset('backend/images/small-visech-light.png') }}" alt="logo"></span>
         </b>
         <!-- logo for regular state and mobile devices -->
@@ -17,20 +17,30 @@
                 .logo-lg {
                     width: 140px;
                 }
+
+                .bar {
+                    float: left;
+                    background-color: white;
+                    background-image: none;
+                    padding: 20px;
+                    font-family: fontAwesome;
+                    color: #fff;
+                }
+
+                .bar:hover {
+                    color: rgb(189, 199, 255);
+                }
+
             }
 
-            .bar {
-                float: left;
-                background-color: transparent;
-                background-image: none;
-                padding: 20px;
-                font-family: fontAwesome;
-                color: #3644AF;
+            .bar{
+                color:transparent;
+                font-size: 0px;
             }
         </style>
         <span class="logo-lg">
-            <img src="{{ asset('backend/images/visech.png') }}" alt="logo" class="light-logo">
-            <img src="{{ asset('backend/images/visech.png') }}" alt="logo" class="dark-logo">
+            <img src="{{ asset('backend/images/visech-light.png') }}" alt="logo" class="light-logo">
+            <img src="{{ asset('backend/images/visech-light.png') }}" alt="logo" class="dark-logo">
         </span>
     </a>
     {{-- Header Navbar: style can be found in header.less --}}
@@ -55,8 +65,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img @if (request()->getHttpHost() == '127.0.0.1:8000') src="{{ asset(Auth::guard('account')->user()->image) }}"
                                     @else
-                                    src="{{ asset('storage/' . Auth::guard('account')->user()->image) }}"@endif class="user-image rounded-circle"
-                            alt="User Image">
+                                    src="{{ asset('storage/' . Auth::guard('account')->user()->image) }}" @endif
+                            class="user-image rounded-circle" alt="User Image">
                     </a>
                     <ul class="dropdown-menu scale-up">
                         {{-- User image --}}
@@ -64,8 +74,8 @@
 
                             <img @if (request()->getHttpHost() == '127.0.0.1:8000') src="{{ asset(Auth::guard('account')->user()->image) }}"
                             @else
-                            src="{{ asset('storage/' . Auth::guard('account')->user()->image) }}"@endif class="float-left rounded-circle"
-                                alt="User Image">
+                            src="{{ asset('storage/' . Auth::guard('account')->user()->image) }}" @endif
+                                class="float-left rounded-circle" alt="User Image">
                             <div>
                                 <br />
                                 <h6>{{ Auth::guard('account')->user()->name }}</h6>
@@ -82,7 +92,7 @@
                                 @can('profile.view', Auth::user())
                                     <div class="col-12 text-left">
                                         <a href="{{ route('account.profile', Auth::guard('account')->user()->id) }}"><i
-                                                class="ion ion-person"></i> My Profile</a>
+                                                class="fa fa-user"></i> My Profile</a>
                                     </div>
                                 @endcan
                                 {{-- <div class="col-12 text-left">
@@ -91,10 +101,13 @@
                                         <div class="col-12 text-left">
                                             <a href="#"><i class="ion ion-settings"></i> Setting</a>
                                         </div>
-                                        <div role="separator" class="divider col-12"></div>
-                                        <div class="col-12 text-left">
-                                            <a href="#"><i class="ti-settings"></i> Account Setting</a>
-                                        </div> --}}
+                                        <div role="separator" class="divider col-12"></div> --}}
+                                @can('accounts.chgPassword', Auth::user())
+                                    <div class="col-12 text-left">
+                                        <a href="{{ route('change.pass', Auth::user()->id) }}"><i class="fa fa-key"></i> Change
+                                            Password</a>
+                                    </div>
+                                @endcan
                                 <div role="separator" class="divider col-12"></div>
                                 <div class="col-12 text-left">
                                     <a class="dropdown-item" href="{{ route('logout') }}"

@@ -36,7 +36,7 @@
                 @endif
                 <div class="row">
                     <div class="col">
-                        <form action="{{ route('network.store') }}" method="post">
+                        <form action="{{ route('network.store') }}" class="prevent-form-multiple-submit" method="post">
                             @csrf
                             <div class="form-group">
                                 <h5>Name <span class="text-danger">*</span></h5>
@@ -90,7 +90,7 @@
                                     @endforeach
                                 </select>
                             </div>
-
+                            
                             <div class="form-group">
                                 <div class="form-group">
                                     <h5>Status <span class="text-danger"></span></h5>
@@ -113,7 +113,7 @@
 
 
                             <div class="text-xs-right">
-                                <button type="submit" class="btn btn-info">Add Network</button>
+                                <button type="submit" class="btn btn-info prevent-button-multiple-submit"><i class="spinner fas fa-spinner fa-spin"></i> Add Network</button>
                             </div>
                         </form>
 
@@ -135,5 +135,6 @@
 
     <script src="{{ asset('backend/js/pages/advanced-form-element.js') }}"></script>
 
+    <script src="{{ asset('backend/js/forms/submit.js') }}"></script>
 
 @endsection

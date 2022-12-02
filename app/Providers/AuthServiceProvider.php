@@ -49,6 +49,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Attendance
         Gate::define('AttendanceRoot.link', 'App\Policies\AttendancePolicy@attendanceLink');
+        Gate::define('Attendance.mark', 'App\Policies\AttendancePolicy@attendanceMark');
 
         // Main Dashboard Panel
         Gate::define('employees', 'App\Policies\DashboardpagePolicy@viewEmp');
@@ -59,5 +60,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('networks.create', 'App\Policies\NetworkPolicy@create');
         Gate::define('networks.update', 'App\Policies\NetworkPolicy@update');
         Gate::define('networks.delete', 'App\Policies\NetworkPolicy@delete');
+
+        // Report
+        Gate::define('reports.link', 'App\Policies\ReportPolicy@reportLink');
+        Gate::define('reports.generate', 'App\Policies\ReportPolicy@generate');
+        Gate::define('reports.thismonth', 'App\Policies\ReportPolicy@allThisMonthAttendance');
+        Gate::define('reports.singlepageuserattend', 'App\Policies\ReportPolicy@userSinglePageAttendance');
     }
 }

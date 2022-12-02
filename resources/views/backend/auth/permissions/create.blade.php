@@ -49,6 +49,7 @@
 								<option value="shifts_post-type">Shifts</option>
 								<option value="dashboard-panel">Dashboard Panel</option>
 								<option value="networks_post-type">Networks</option>
+								<option value="reports_post-type">Report</option>
 								<option value="other_post-type">Other</option>
 							</select>
 						</div>

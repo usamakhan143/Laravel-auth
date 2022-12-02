@@ -48,7 +48,7 @@
                 </tfoot>
                 <tbody>
                     @foreach ($accounts as $detail)
-                        <tr>
+                        <tr data-href="{{ route('show.account', $detail->id) }}">
                             <td>{{ $detail->name }}</td>
                             <td>{{ $detail->email }}</td>
                             <td>{{ $detail->phone }}</td>
@@ -66,10 +66,10 @@
                             </td>
                             @can('accounts.update', Auth::user())
                                 <td>
-                                    <a href="{{ route('show.account', $detail->id) }}"
+                                    {{-- <a href="{{ route('show.account', $detail->id) }}"
                                         class="btn btn-block btn-primary btn-xs">
                                         <i class="fa fa-edit"></i> Show
-                                    </a>
+                                    </a> --}}
 
                                     <a href="{{ route('accounts.edit', $detail->id) }}"
                                         class="btn btn-block btn-success btn-xs">
