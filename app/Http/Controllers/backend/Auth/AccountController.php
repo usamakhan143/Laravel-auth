@@ -31,7 +31,11 @@ class AccountController extends Controller
 
         if(Auth::user()->can('accounts.view')) {
 
-            $accounts = Account::where('id', '<>', 1)->get();
+            $accounts = Account::whereHas(
+                'roles', function($q){
+                    $q->where('name', 'Employee');
+                }
+            )->get(['id', 'email', 'name', 'phone', 'status']);
             return view('backend.auth.users.index', compact('accounts'));
 
         }

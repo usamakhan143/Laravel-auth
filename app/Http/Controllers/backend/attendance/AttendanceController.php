@@ -10,6 +10,7 @@ use App\Models\Cnetwork;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Stevebauman\Location\Facades\Location;
 
 class AttendanceController extends Controller
 {
@@ -23,16 +24,30 @@ class AttendanceController extends Controller
     {
         $this->middleware('auth:account');
     }
-    
 
 
-    public function markAttendance() {
+
+    public function markAttendance()
+    {
 
         $getCurrentIP = Helper::getCurrentIp();
-        
+
+        // Location
+        $loc = Location::get($getCurrentIP);
+        if ($getCurrentIP == '127.0.0.1') {
+            $checkLat = '24.9246';
+            $checkLng = '67.087';
+            $checkZip = '75300';
+        } else {
+            $checkLat = $loc->latitude;
+            $checkLng = $loc->longitude;
+            $checkZip = $loc->zipCode;
+        }
+        ($checkLat == '24.9246' && $checkLng == '67.087' && $checkZip == '75300') ? $checkIP = true : $checkIP = false;
+
         // Check User Shift
         $currentUser_whosLogin = Auth::guard('account')->user()->id;
-        
+
         $check_user_shift = Auth::guard('account')->user()->shifts;
         $user_shift_pusharray = Arr::get($check_user_shift, 0);
         $current_userShift_start_time = Arr::pull($user_shift_pusharray, 'start_time');
@@ -44,12 +59,12 @@ class AttendanceController extends Controller
             ['account_id', $currentUser_whosLogin]
         ])->get()->pluck('ip')->toArray();
 
-        $checkIP = in_array($getCurrentIP, $officeNet);
+        // $checkIP = in_array($getCurrentIP, $officeNet);
         $officeStatus = Cnetwork::where('name', 'Office')->value('status');
-        
-        if($start_timeFormat >= '11:00:00' && $start_timeFormat < '17:00:00') {
-            
-            if(date('Y-m-d H:i:s') >= date('Y-m-d').' '.$start_timeFormat) {
+
+        if ($start_timeFormat >= '11:00:00' && $start_timeFormat < '15:00:00') {
+
+            if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $start_timeFormat) {
                 $check_Is_marked = Attendance::where([
                     ['day', date('d')],
                     ['month', date('m')],
@@ -57,7 +72,7 @@ class AttendanceController extends Controller
                     ['account_id', $currentUser_whosLogin]
                 ])->value('in');
 
-                
+
                 $get_out_status = Attendance::where([
                     ['day', date('d')],
                     ['month', date('m')],
@@ -73,15 +88,14 @@ class AttendanceController extends Controller
                     ['year', date('Y')],
                     ['account_id', $currentUser_whosLogin]
                 ])->first();
-            }
-            else {
+            } else {
                 $check_Is_marked = Attendance::where([
-                    ['day', date('d')-1],
+                    ['day', date('d') - 1],
                     ['month', date('m')],
                     ['year', date('Y')],
                     ['account_id', $currentUser_whosLogin]
                 ])->value('in');
-                
+
                 $get_out_status = Attendance::where([
                     ['day', date('d') - 1],
                     ['month', date('m')],
@@ -89,7 +103,7 @@ class AttendanceController extends Controller
                     ['in', 1],
                     ['account_id', $currentUser_whosLogin]
                 ])->value('out');
-                
+
                 // current user attendance
                 $get_my_attendance = Attendance::where([
                     ['day', date('d') - 1],
@@ -105,11 +119,9 @@ class AttendanceController extends Controller
                     'atOffice'
                 ]);
             }
+        } elseif ($start_timeFormat == '15:00:00' && $start_timeFormat < '17:00:00') {
 
-        }
-        elseif($start_timeFormat == '17:00:00') {
-
-            if(date('Y-m-d H:i:s') >= date('Y-m-d').' '.$start_timeFormat) {
+            if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $start_timeFormat) {
                 $check_Is_marked = Attendance::where([
                     ['day', date('d')],
                     ['month', date('m')],
@@ -124,7 +136,7 @@ class AttendanceController extends Controller
                     ['in', 1],
                     ['account_id', $currentUser_whosLogin]
                 ])->value('out');
-                
+
                 // current user attendance
                 $get_my_attendance = Attendance::where([
                     ['day', date('d')],
@@ -139,15 +151,14 @@ class AttendanceController extends Controller
                     'isHalfDay',
                     'atOffice'
                 ]);
-            }
-            else {
+            } else {
                 $check_Is_marked = Attendance::where([
-                    ['day', date('d')-1],
+                    ['day', date('d') - 1],
                     ['month', date('m')],
                     ['year', date('Y')],
                     ['account_id', $currentUser_whosLogin]
                 ])->value('in');
-                
+
                 $get_out_status = Attendance::where([
                     ['day', date('d') - 1],
                     ['month', date('m')],
@@ -155,7 +166,7 @@ class AttendanceController extends Controller
                     ['in', 1],
                     ['account_id', $currentUser_whosLogin]
                 ])->value('out');
-                
+
                 // current user attendance
                 $get_my_attendance = Attendance::where([
                     ['day', date('d') - 1],
@@ -171,10 +182,70 @@ class AttendanceController extends Controller
                     'atOffice'
                 ]);
             }
+        } elseif ($start_timeFormat == '17:00:00') {
 
+            if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $start_timeFormat) {
+                $check_Is_marked = Attendance::where([
+                    ['day', date('d')],
+                    ['month', date('m')],
+                    ['year', date('Y')],
+                    ['account_id', $currentUser_whosLogin]
+                ])->value('in');
 
-        }
-        else {
+                $get_out_status = Attendance::where([
+                    ['day', date('d')],
+                    ['month', date('m')],
+                    ['year', date('Y')],
+                    ['in', 1],
+                    ['account_id', $currentUser_whosLogin]
+                ])->value('out');
+
+                // current user attendance
+                $get_my_attendance = Attendance::where([
+                    ['day', date('d')],
+                    ['month', date('m')],
+                    ['year', date('Y')],
+                    ['account_id', $currentUser_whosLogin]
+                ])->first([
+                    'startTime',
+                    'endTime',
+                    'isLate',
+                    'over_time',
+                    'isHalfDay',
+                    'atOffice'
+                ]);
+            } else {
+                $check_Is_marked = Attendance::where([
+                    ['day', date('d') - 1],
+                    ['month', date('m')],
+                    ['year', date('Y')],
+                    ['account_id', $currentUser_whosLogin]
+                ])->value('in');
+
+                $get_out_status = Attendance::where([
+                    ['day', date('d') - 1],
+                    ['month', date('m')],
+                    ['year', date('Y')],
+                    ['in', 1],
+                    ['account_id', $currentUser_whosLogin]
+                ])->value('out');
+
+                // current user attendance
+                $get_my_attendance = Attendance::where([
+                    ['day', date('d') - 1],
+                    ['month', date('m')],
+                    ['year', date('Y')],
+                    ['account_id', $currentUser_whosLogin]
+                ])->first([
+                    'startTime',
+                    'endTime',
+                    'isLate',
+                    'isHalfDay',
+                    'over_time',
+                    'atOffice'
+                ]);
+            }
+        } else {
             dd('sorry');
         }
 
@@ -186,7 +257,7 @@ class AttendanceController extends Controller
             ['out', 1],
             ['workingHours', '>', 0],
             ['account_id', $currentUser_whosLogin]
-        ])->get([
+        ])->orderBy('created_at', 'desc')->get([
             'startTime',
             'endTime',
             'isLate',
@@ -199,22 +270,23 @@ class AttendanceController extends Controller
             'month',
             'year'
         ]);
-        
+
         return view('backend.attendance.mark.attendance', compact('checkIP', 'officeStatus', 'check_Is_marked', 'get_out_status', 'get_my_attendance', 'get_my_all_attendance'));
     }
 
 
 
     // Check IN
-    public function checkInStore() {
+    public function checkInStore()
+    {
 
         $check_in = new Attendance();
-        
+
         // Check Is the candidate is late?
         $user_shift = Account::find(Auth::guard('account')->user()->id)->shifts;
         $user_shift_pusharray = Arr::get($user_shift, 0);
-        $current_userShift_start_time = Arr::pull($user_shift_pusharray, 'start_time').':00';
-        
+        $current_userShift_start_time = Arr::pull($user_shift_pusharray, 'start_time') . ':00';
+
         $c_shift_late_Time =  Carbon::createFromFormat('H:i:s', $current_userShift_start_time)->addMinutes(30);
         $a_st_user = Carbon::createFromFormat('H:i:s', date('H:i:s'))->addMinutes(0);
         $actual_start_time_ofUser = $a_st_user->toTimeString();
@@ -225,6 +297,18 @@ class AttendanceController extends Controller
         // Check is the candidate is inside office
         $currentNetwork_Address = Helper::getCurrentIp();
         $officeStatus = Cnetwork::where('name', 'Office')->value('status');
+
+        // Location
+        $loc = Location::get($currentNetwork_Address);
+        if ($currentNetwork_Address == '127.0.0.1') {
+            $checkLat = '24.9246';
+            $checkLng = '67.087';
+            $checkZip = '75300';
+        } else {
+            $checkLat = $loc->latitude;
+            $checkLng = $loc->longitude;
+            $checkZip = $loc->zipCode;
+        }
 
         $data = [
 
@@ -247,49 +331,45 @@ class AttendanceController extends Controller
 
         ];
 
-        
 
-        if($officeStatus == 1){
-            
-            if (date('Y-m-d H:i:s') >= date('Y-m-d').' '.$current_userShift_start_time) {
-                
-                $officeNet = Cnetwork::where([
-                    ['status', 1],
-                    ['account_id', Auth::guard('account')->user()->id]
-                ])->get()->pluck('ip')->toArray();
-                
-                $checkIP = in_array($currentNetwork_Address, $officeNet);
 
-                if($checkIP == true){
+        if ($officeStatus == 1) {
+
+            if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $current_userShift_start_time) {
+
+                // For IP Functionality
+                // $officeNet = Cnetwork::where([
+                //     ['status', 1],
+                //     ['account_id', Auth::guard('account')->user()->id]
+                // ])->get()->pluck('ip')->toArray();
+
+                // $checkIP = in_array($currentNetwork_Address, $officeNet);
+                ($checkLat == '24.9246' && $checkLng == '67.087' && $checkZip == '75300') ? $checkIP = true : $checkIP = false;
+
+                if ($checkIP == true) {
                     // dd($data);
                     $check_in->create($data);
                     return redirect()->route('mark.in')->with('success_msg', 'Your attendance has been successfully marked');
-
-                }
-                else {
+                } else {
                     return back()->with('error_msg', 'Oops! I think you are not currently inside office');
                 }
+            } else {
+                return back()->with('primary_msg', 'Oops! you have reached before time! please wait for your shift starts at ' . $current_userShift_start_time);
             }
-            else {
-                return back()->with('primary_msg', 'Oops! you have reached before time! please wait for your shift starts at '.$current_userShift_start_time);
-            }
-
-        }
-        else {
-            if (date('Y-m-d H:i:s') >= date('Y-m-d').' '.$current_userShift_start_time) {
+        } else {
+            if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $current_userShift_start_time) {
                 $check_in->create($data);
                 return redirect()->route('mark.in')->with('success_msg', 'Your remote attendance has been successfully marked');
-            }
-            else {
+            } else {
                 return back()->with('primary_msg', 'Oops! you have reached before time! please wait for your shift starts');
             }
         }
-
     }
 
 
     //Check OUT
-    public function checkOut() {
+    public function checkOut()
+    {
 
         $loggedInUser = Auth::guard('account')->user()->id;
 
@@ -307,10 +387,9 @@ class AttendanceController extends Controller
             ['account_id', $loggedInUser]
         ])->value('out');
 
-        if($get_out_status < 1)
-        {
-            if($start_timeFormat >= '11:00:00' && $start_timeFormat < '17:00:00') {
-                if(date('Y-m-d H:i:s') >= date('Y-m-d').' '.$start_timeFormat) {
+        if ($get_out_status < 1) {
+            if ($start_timeFormat >= '11:00:00' && $start_timeFormat < '17:00:00') {
+                if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $start_timeFormat) {
                     $who_is = Attendance::where([
                         ['day', date('d')],
                         ['month', date('m')],
@@ -319,10 +398,9 @@ class AttendanceController extends Controller
                         ['out', 0],
                         ['account_id', $loggedInUser]
                     ])->value('id');
-                }
-                else {
+                } else {
                     $who_is = Attendance::where([
-                        ['day', date('d')-1],
+                        ['day', date('d') - 1],
                         ['month', date('m')],
                         ['year', date('Y')],
                         ['in', 1],
@@ -330,62 +408,81 @@ class AttendanceController extends Controller
                         ['account_id', $loggedInUser]
                     ])->value('id');
                 }
+            } elseif ($start_timeFormat >= '15:00:00' && $start_timeFormat < '17:00:00') {
+                if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $start_timeFormat) {
+                    $who_is = Attendance::where([
+                        ['day', date('d')],
+                        ['month', date('m')],
+                        ['year', date('Y')],
+                        ['in', 1],
+                        ['out', 0],
+                        ['account_id', $loggedInUser]
+                    ])->value('id');
+                } else {
+                    $who_is = Attendance::where([
+                        ['day', date('d') - 1],
+                        ['month', date('m')],
+                        ['year', date('Y')],
+                        ['in', 1],
+                        ['out', 0],
+                        ['account_id', $loggedInUser]
+                    ])->value('id');
+                }
+            } elseif ($start_timeFormat == '17:00:00') {
+                if (date('Y-m-d H:i:s') >= date('Y-m-d') . ' ' . $start_timeFormat) {
+                    $who_is = Attendance::where([
+                        ['day', date('d')],
+                        ['month', date('m')],
+                        ['year', date('Y')],
+                        ['in', 1],
+                        ['out', 0],
+                        ['account_id', $loggedInUser]
+                    ])->value('id');
+                } else {
+                    $who_is = Attendance::where([
+                        ['day', date('d') - 1],
+                        ['month', date('m')],
+                        ['year', date('Y')],
+                        ['in', 1],
+                        ['out', 0],
+                        ['account_id', $loggedInUser]
+                    ])->value('id');
+                }
+            } else {
+                dd('Sorry');
             }
-            elseif($start_timeFormat == '17:00:00') {
-                if(date('Y-m-d H:i:s') >= date('Y-m-d').' '.$start_timeFormat) {
-                    $who_is = Attendance::where([
-                        ['day', date('d')],
-                        ['month', date('m')],
-                        ['year', date('Y')],
-                        ['in', 1],
-                        ['out', 0],
-                        ['account_id', $loggedInUser]
-                    ])->value('id');
-                }
-                else {
-                    $who_is = Attendance::where([
-                        ['day', date('d')-1],
-                        ['month', date('m')],
-                        ['year', date('Y')],
-                        ['in', 1],
-                        ['out', 0],
-                        ['account_id', $loggedInUser]
-                    ])->value('id');
-                }
-            } else {dd('Sorry');}
-            
+
             $check_out = Attendance::find($who_is);
 
             // Check Is the candidate is late?
             $user_shift = Account::find($loggedInUser)->shifts->toArray();
             $user_shift_pusharray = Arr::get($user_shift, 0);
-            
+
             // $current_userShift_end_time = Arr::pull($user_shift_pusharray, 'end_time').':00';
             // $current_userShift_extraMin = Carbon::createFromFormat('H:i:s', $current_userShift_end_time)->addMinutes(12)->toTimeString();
             $actual_end_time_ofUser = Carbon::createFromFormat('H:i:s', date('H:i:s'))->addMinutes(0)->toTimeString();
-            
+
             // Get Working Hours from Shift 
             $whrs = Arr::pull($user_shift_pusharray, 'working_hours');
             // Hours into minutes
             $whrsM = $whrs * 60;
-            
+
             // Check the candidate current working hours
-            $Ymd = $check_out->year.'-'.$check_out->month.'-'.$check_out->day;
+            $Ymd = $check_out->year . '-' . $check_out->month . '-' . $check_out->day;
             // dd(date('Y-m-d H:i:s'));
-            $to = Carbon::createFromFormat('Y-m-d H:i:s', $Ymd.' '.$check_out->startTime);
-            $from = Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d').' '.$actual_end_time_ofUser);
+            $to = Carbon::createFromFormat('Y-m-d H:i:s', $Ymd . ' ' . $check_out->startTime);
+            $from = Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d') . ' ' . $actual_end_time_ofUser);
             $get_working_Minutes = $to->diffInMinutes($from);
 
             // Check when the candidate is late
-            if($check_out->isLate > 0)
-            {
+            if ($check_out->isLate > 0) {
                 // Candidate working hours should be equal to shift hours or less than shift hours with adding 30mins
                 if ($get_working_Minutes >= $whrsM && $get_working_Minutes < $whrsM + 31) {
                     $is_late = 0;
                     $is_overtime = 0;
                 }
                 // Candidate working hours should be greater than shift hours with adding 30mins
-                elseif($get_working_Minutes > $whrsM + 30) {
+                elseif ($get_working_Minutes > $whrsM + 30) {
                     $is_overtime = 1;
                     $is_late = 0;
                     $over_time = $get_working_Minutes - $whrsM;
@@ -405,7 +502,7 @@ class AttendanceController extends Controller
                     $is_overtime = 0;
                 }
                 // Candidate working hours should be greater than shift hours with adding 30mins
-                elseif($get_working_Minutes > $whrsM + 30) {
+                elseif ($get_working_Minutes > $whrsM + 30) {
                     $is_overtime = 1;
                     $over_time = $get_working_Minutes - $whrsM;
                     $isHalfday = 0;
@@ -417,10 +514,10 @@ class AttendanceController extends Controller
                 }
             }
 
-            if($get_working_Minutes <= 840) {
+            if ($get_working_Minutes <= 840) {
 
                 $data = [
-                    
+
                     'isHalfDay' => $isHalfday ?? 0,
                     'isLate' => $is_late ?? 0,
                     'out' => 1,
@@ -433,9 +530,7 @@ class AttendanceController extends Controller
                     'team_id' => 0
 
                 ];
-                
-            }
-            else {
+            } else {
 
                 $data = [
                     'out' => 1,
@@ -443,30 +538,39 @@ class AttendanceController extends Controller
                     'team_id' => 0
 
                 ];
-
             }
-            
+
             $currentNetwork_Address = Helper::getCurrentIp();
-            $officeNet = Cnetwork::where([
-                ['status', 1],
-                ['account_id', Auth::guard('account')->user()->id]
-            ])->get()->pluck('ip')->toArray();
-            
-            $checkIP = in_array($currentNetwork_Address, $officeNet);
-
-            if($checkIP == true){
-                $check_out->update($data);
+            // Location
+            $loc = Location::get($currentNetwork_Address);
+            if ($currentNetwork_Address == '127.0.0.1') {
+                $checkLat = '24.9246';
+                $checkLng = '67.087';
+                $checkZip = '75300';
+            } else {
+                $checkLat = $loc->latitude;
+                $checkLng = $loc->longitude;
+                $checkZip = $loc->zipCode;
             }
-            else {
+
+            // For IP checking Functionality
+            // $officeNet = Cnetwork::where([
+            //     ['status', 1],
+            //     ['account_id', Auth::guard('account')->user()->id]
+            // ])->get()->pluck('ip')->toArray();
+
+            // $checkIP = in_array($currentNetwork_Address, $officeNet);
+            ($checkLat == '24.9246' && $checkLng == '67.087' && $checkZip == '75300') ? $checkIP = true : $checkIP = false;
+
+            if ($checkIP == true) {
+                $check_out->update($data);
+            } else {
                 return back()->with('error_msg', 'Oops! I think you are not currently inside office');
             }
 
             return back()->with('error_msg', 'Good bye! have a great day');
-        }
-        else {
+        } else {
             return back()->with('error_msg', 'You have already marked that you leave the office');
         }
-        
     }
-
 }

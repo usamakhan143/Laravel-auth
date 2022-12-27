@@ -19,5 +19,9 @@ class Profile extends Model
         'account_id'
         
     ];
+
+    public function account() {
+    	return $this->belongsTo('App\Models\backend\Account','account_id');
+    }
     
 }

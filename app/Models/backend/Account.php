@@ -17,6 +17,10 @@ class Account extends Authenticatable
     public function profile() {
     	return $this->hasOne('App\Models\backend\Profile','account_id');
     }
+    
+    public function cnic() {
+    	return $this->hasOne('App\Models\backend\Cnic','account_id');
+    }
 
     public function shifts() {
     	return $this->belongsToMany('App\Models\attendance\Shift','account_shifts');

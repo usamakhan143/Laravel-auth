@@ -6,6 +6,7 @@ use App\Helpers\Fileupload;
 use App\Http\Controllers\Controller;
 use App\Models\attendance\Attendance;
 use App\Models\backend\Account;
+use App\Models\backend\Cnic;
 use App\Models\backend\Profile;
 use App\Models\Cnetwork;
 use Carbon\Carbon;
@@ -43,21 +44,23 @@ class ProfileController extends Controller
 
         if (Auth::user()->can('profile.view')) {
 
-            if ($request->nic) {
+            if (Auth::guard('account')->user()->profile->status < 1) {
                 $this->validate($request, [
 
                     'nic' => ['required'],
-                    'profileImage' => ['mimes:webp', 'dimensions:max_width=500,max_height=500,min_width=500,min_height=500'],
+                    'id-picture' => ['required'],
+                    'profileImage' => ['mimes:png,webp,jpg,jpeg'],
                     'gender' => ['required']
 
                 ]);
             } else {
                 $this->validate($request, [
 
-                    'profileImage' => ['mimes:webp', 'dimensions:max_width=500,max_height=500,min_width=500,min_height=500']
+                    'profileImage' => ['required', 'mimes:png,webp,jpg,jpeg'],
 
                 ]);
             }
+
             $profile_Id = Profile::where('account_id', '=', $id)->value('id');
             $get_Profile = Profile::find($profile_Id);
 
@@ -65,9 +68,49 @@ class ProfileController extends Controller
 
             if ($get_Profile->status == 0) {
 
+                $id_card = $request->file('id-picture');
+
+                $count_id_photo = count($id_card);
+                $fold = 'identity';
+                $name = 'NIC';
+
+
+                if ($count_id_photo == 2) {
+                    $user = Cnic::where('account_id', '=', $id)->first();
+                    if ($user == null) {
+                        $cnic_files = Fileupload::multiUploadFile($id_card, $count_id_photo, $fold, $name);
+                        $addCnic = new Cnic();
+                        $addCnic->pic_1 = $cnic_files[0];
+                        $addCnic->pic_2 = $cnic_files[1];
+                        $addCnic->account_id = $id;
+                        $addCnic->status = 1;
+
+                        $addCnic->save();
+                    } else {
+                        $cnic_files = Fileupload::multiUploadFile($id_card, $count_id_photo, $fold, $name);
+                        $cnic_find = Cnic::where('account_id', '=', $id)->value('id');
+                        $find_cnic = Cnic::find($cnic_find);
+
+                        $path = $find_cnic->pic_1;
+                        // dd(storage_path($path));
+                        unlink(storage_path($path));
+                        $path2 = $find_cnic->pic_2;
+                        unlink(storage_path($path2));
+
+                        $find_cnic->pic_1 = $cnic_files[0];
+                        $find_cnic->pic_2 = $cnic_files[1];
+                        $find_cnic->account_id = $id;
+                        $find_cnic->status = 1;
+
+                        $find_cnic->save();
+                    }
+                } else {
+                    return back()->with('primary_msg', 'CNIC Back & Front should not be more than 2');
+                }
+
                 $get_Profile->identityNumber = $request->nic;
                 $get_Profile->gender = $request->gender;
-                $get_Profile->status = 1;
+                $get_Profile->status = 0;
 
                 $update_myProfile = $get_Profile->update();
 
@@ -98,7 +141,7 @@ class ProfileController extends Controller
 
             if ($profileImage) {
                 $addFile = Account::find($id);
-                $directory = '/profile_images/';
+                $directory = 'profile_images/';
                 $getImageUrl = Fileupload::singleUploadFile($profileImage, $profile_Id, $directory);
                 $addFile->image = $getImageUrl;
                 $saveImage = $addFile->update();
@@ -180,10 +223,46 @@ class ProfileController extends Controller
             ])->orderBy('created_at', 'desc')->get();
 
             return view('backend.auth.users.show', compact('getAccount', 'getAttendance', 'get_Atte'));
-        } 
-        else
-        {
+        } else {
             return redirect()->route('dashboard.home');
         }
+    }
+
+
+    // Get Pending Profiles
+    public function pendingProf()
+    {
+        if(Auth::user()->can('pending.profiles')){
+            $all_profiles = Profile::where('status', 0)->get();
+            $all_cnic = Cnic::where('status', 0)->get();
+            return view('backend.auth.profiles.pending', compact('all_profiles', 'all_cnic'));
+        }
+        else {
+            return redirect()->route('dashboard.home');
+        }
+    }
+    // Activating Profiles
+    public function activateProf($id)
+    {
+        if (Auth::user()->can('profile.activate')) {
+            $profile = Profile::find($id);
+            $profile->status = 1;
+            $update = $profile->save();
+            if ($update) {
+                return back()->with('success_msg', 'Profile has been Activated Successfully');
+            } else {
+                return view('backend.auth.profiles.pending');
+            }
+        } else {
+            return redirect()->route('dashboard.home');
+        }
+    }
+
+    // Request user to reupload the Identity card
+    public function requestReupload($id) {
+        $find_idcard = Cnic::find($id);
+        $find_idcard->status = 0;
+        $find_idcard->save();
+        return back()->with('warning_msg', 'Request has been sended successfully to the user');
     }
 }

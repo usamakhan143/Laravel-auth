@@ -6,6 +6,7 @@
 
     {{-- Theme style --}}
     <link rel="stylesheet" href="{{ asset('backend/css/master_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @endsection
 
@@ -28,8 +29,10 @@
                         @if ($officeStatus > 0)
                             @if ($checkIP == true)
                                 <div class="info-box">
-                                    <a class="anchor-links" data-url="{{ route('mark.instore') }}"><span class="info-box-icon bg-info"><i
-                                                class="fa fa-sign-in punch"></i><i class="spinner fas fa-spinner fa-spin"></i></span></a>
+                                    <a class="anchor-links" data-url="{{ route('mark.instore') }}"><span
+                                            class="info-box-icon bg-info"><img class="spinner"
+                                                src="{{ asset('backend/images/loading-new.gif') }}" /><i
+                                                class="fa fa-sign-in punch"></i></span></a>
                                     <div class="info-box-content">
                                         <span class="info-box-number">Check IN<small></small></span>
                                         <span class="info-box-text"><b>I am in Office</b></span>
@@ -42,8 +45,10 @@
                             @endif
                         @else
                             <div class="info-box">
-                                <a class="anchor-links" data-url="{{ route('mark.instore') }}"><span class="info-box-icon bg-orange"><i
-                                            class="fa fa-sign-in punch"></i><i class="spinner fas fa-spinner fa-spin"></i></span></a>
+                                <a class="anchor-links" data-url="{{ route('mark.instore') }}"><span
+                                        class="info-box-icon bg-orange"><i class="fa fa-sign-in punch"></i><img
+                                            class="spinner"
+                                            src="{{ asset('backend/images/loading-new.gif') }}" /></span></a>
                                 <div class="info-box-content">
                                     <span class="info-box-number">Check IN<small></small></span>
                                     <span class="info-box-text"><b>I am on Remote</b></span>
@@ -54,8 +59,11 @@
                         @if ($get_out_status < 1)
                             @if ($checkIP == true)
                                 <div class="info-box">
-                                    <a class="anchor-links" data-url="{{ route('mark.outstore') }}"><span class="info-box-icon bg-danger"><i
-                                                class="fa fa-sign-out punch"></i><i class="spinner fas fa-spinner fa-spin"></i></span></a>
+                                    <a class="anchor-links-checkout" data-url="{{ route('mark.outstore') }}"
+                                        onclick="return confirm('Are you sure you want to Check OUT?');"><span
+                                            class="info-box-icon bg-danger"><i class="fa fa-sign-out punch"></i><img
+                                                class="spinner"
+                                                src="{{ asset('backend/images/loading-new.gif') }}" /></span></a>
                                     <div class="info-box-content">
                                         <span class="info-box-number">Check OUT<small></small></span>
                                         <span class="info-box-text"><b>I am Signing Off now</b></span>
@@ -96,25 +104,27 @@
                                             </span>
                                         </a>
                                     @endif
-                                    
-                                    @if($get_my_attendance->isLate > 0)
+
+                                    @if ($get_my_attendance->isLate > 0)
                                         <a class="media media-single" href="#">
                                             <span class="title">Late</span>
                                             <span class="badge badge-pill badge-danger">YES</span>
                                         </a>
                                     @endif
 
-                                    @if($get_my_attendance->isHalfDay > 0)
+                                    @if ($get_my_attendance->isHalfDay > 0)
                                         <a class="media media-single" href="#">
                                             <span class="title">Half day</span>
                                             <span class="badge badge-pill badge-danger">Yes</span>
                                         </a>
                                     @endif
 
-                                    @if($get_my_attendance->over_time > 0)
+                                    @if ($get_my_attendance->over_time > 0)
                                         <a class="media media-single" href="#">
                                             <span class="title">Over time</span>
-                                            <span class="badge badge-pill bg-olive">{{number_format((float) $get_my_attendance->over_time / 60, 1, '.', '')}} hrs</span>
+                                            <span
+                                                class="badge badge-pill bg-olive">{{ number_format((float) $get_my_attendance->over_time / 60, 1, '.', '') }}
+                                                hrs</span>
                                         </a>
                                     @endif
 
@@ -199,7 +209,8 @@
                                             </td>
                                             <td>
                                                 @if ($detail->isOvertime > 0)
-                                                    <span class='badge badge-pill badge-brown' title="{{number_format((float) $detail->over_time / 60, 1, '.', '')}} hrs">OVERTIME</span>
+                                                    <span class='badge badge-pill badge-brown'
+                                                        title="{{ number_format((float) $detail->over_time / 60, 1, '.', '') }} hrs">OVERTIME</span>
                                                 @else
                                                     NO
                                                 @endif
@@ -224,25 +235,48 @@
                 </div>
             </div>
         @else
-            <div class="col-md-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                        {{-- <h4 class="box-title">Alert</h4> --}}
-                    </div>
-                    <div class="box-body">
-                        <div class="media flex-column text-center p-40">
-                            <span class="avatar avatar-lg bg-danger opacity-60 mx-auto">
-                                <i class="fa fa-exclamation-triangle fa-lg"></i>
-                            </span>
-                            <div class="mt-20">
-                                <h3 class="text-uppercase fw-500">Alert</h3>
-                                <p>PLease activate your profile first!!!</p>
-                                <a href="{{ route('account.profile', Auth::guard('account')->user()->id) }}" class="btn btn-primary btn-lg">Activate now</a>
+            @if(Auth::guard('account')->user()->cnic != null && Auth::guard('account')->user()->cnic->status == 1)
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            {{-- <h4 class="box-title">Alert</h4> --}}
+                        </div>
+                        <div class="box-body">
+                            <div class="media flex-column text-center p-40">
+                                <span class="avatar avatar-lg bg-warning opacity-60 mx-auto">
+                                    <i class="fa fa-exclamation-triangle fa-lg"></i>
+                                </span>
+                                <div class="mt-20">
+                                    <h3 class="text-uppercase fw-500">Wait</h3>
+                                    <p>Wait for the verification done after the verification you will be able to access this page.</p>
+                                    <a href="#" class="btn btn-info btn-lg"><i class="fa fa-spinner fa-spin" style="font-size:16px"></i> Processing your request</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            {{-- <h4 class="box-title">Alert</h4> --}}
+                        </div>
+                        <div class="box-body">
+                            <div class="media flex-column text-center p-40">
+                                <span class="avatar avatar-lg bg-danger opacity-60 mx-auto">
+                                    <i class="fa fa-exclamation-triangle fa-lg"></i>
+                                </span>
+                                <div class="mt-20">
+                                    <h3 class="text-uppercase fw-500">Alert</h3>
+                                    <p>PLease activate your profile first!!!</p>
+                                    <a href="{{ route('account.profile', Auth::guard('account')->user()->id) }}"
+                                        class="btn btn-primary btn-lg">Activate now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         @endif
 
     @endsection

@@ -67,7 +67,7 @@ class PermissionController extends Controller
             $permissions = new Permission();
             $p_for = $request->per_for;
 
-            if ($p_for == 'reports_post-type' || $p_for == 'networks_post-type' || $p_for == 'attendance_post-type' || $p_for == 'dashboard-panel' || $p_for == 'other_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type' || $p_for == 'shifts_post-type')
+            if ($p_for == 'holidays_post-type' || $p_for == 'reports_post-type' || $p_for == 'networks_post-type' || $p_for == 'attendance_post-type' || $p_for == 'dashboard-panel' || $p_for == 'other_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type' || $p_for == 'shifts_post-type')
             {
                 $permissions->name = $request->name;
                 $permissions->for = $p_for;
@@ -126,7 +126,7 @@ class PermissionController extends Controller
 
             if ($peredit->name == $request->name && $peredit->for == $p_for) 
             {
-                if ($p_for == 'reports_post-type' || $p_for == 'networks_post-type' || $p_for == 'attendance_post-type' || $p_for == 'dashboard-panel' || $p_for == 'other_post-type' || $p_for == 'posttype_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type' || $p_for == 'shifts_post-type')
+                if ($p_for == 'holidays_post-type' || $p_for == 'reports_post-type' || $p_for == 'networks_post-type' || $p_for == 'attendance_post-type' || $p_for == 'dashboard-panel' || $p_for == 'other_post-type' || $p_for == 'posttype_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type' || $p_for == 'shifts_post-type')
                 {
                     $peredit->name = $request->name;
                     $peredit->for = $p_for;
@@ -145,7 +145,7 @@ class PermissionController extends Controller
             }
             else
             {
-                if ($p_for == 'reports_post-type' || $p_for == 'networks_post-type' || $p_for == 'attendance_post-type' || $p_for == 'dashboard-panel' || $p_for == 'other_post-type' || $p_for == 'slots_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type' || $p_for == 'shifts_post-type')
+                if ($p_for == 'holidays_post-type' || $p_for == 'reports_post-type' || $p_for == 'networks_post-type' || $p_for == 'attendance_post-type' || $p_for == 'dashboard-panel' || $p_for == 'other_post-type' || $p_for == 'slots_post-type' || $p_for == 'users_post-type' || $p_for == 'permissions_post-type' || $p_for == 'roles_post-type' || $p_for == 'shifts_post-type')
                 {
                     $peredit->name = $request->name;
                     $peredit->for = $p_for;

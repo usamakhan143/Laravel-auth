@@ -39,7 +39,13 @@ class ProfilePolicy
 
     }
 
+    public function idCard(Account $user) {
+        return $this->getPermissions($user, 'Identity-card');
+    }
 
+    public function activateProfile(Account $user) {
+        return $this->getPermissions($user, 'Activate-profile');
+    }
 
     //Main Function for all the policies
     protected function getPermissions($modelName, $permission_name)

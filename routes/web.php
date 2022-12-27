@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,6 +71,10 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     Route::get('/account/{id}', 'Auth\ProfileController@showAccount')->name('show.account'); 
     Route::get('/get-attendance/{id}', 'Auth\ProfileController@getAccountAttendance')->name('att.range.account'); 
 
+    // Pending Profiles
+    Route::get('/pending-profiles', 'Auth\ProfileController@pendingProf')->name('pend.profile');
+    Route::get('/activate-profile/{id}', 'Auth\ProfileController@activateProf')->name('actv.profile');
+    Route::get('/reupload-id-card/{id}', 'Auth\ProfileController@requestReupload')->name('idcard.reupload');
 
     // Shift
     Route::get('/shifts', 'attendance\ShiftController@allShifts')->name('shifts.index');
@@ -103,6 +108,29 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'App\Http\Controllers\back
     // Delete Network
     Route::get('/delete-network/{id}', 'NetworkController@destroyNetwork')->name('del.network');
 
+    // Holidays
+    Route::get('/all-holidays', 'attendance\PublicholidayController@index')->name('all.holidays');
+    // Add Holiday
+    Route::get('add-holiday', 'attendance\PublicholidayController@create')->name('holiday.create');
+    Route::post('add-holiday', 'attendance\PublicholidayController@holidayStore')->name('holiday.store');
+    // Edit Holiday
+    Route::get('edit-holiday/{id}', 'attendance\PublicholidayController@edit')->name('holiday.edit');
+    Route::put('edit-holiday/{id}', 'attendance\PublicholidayController@updateHoliday')->name('holiday.update');
+    Route::get('delete-holiday/{id}', 'attendance\PublicholidayController@deleteHoliday')->name('holiday.destroy');
+
+});
+
+Route::get('/cc', function () {
+    Artisan::call('cache:clear');
+    return redirect()->route('company.login');
+});
+Route::get('/ccc', function () {
+    Artisan::call('config:cache');
+    echo '<script>alert("config cache Success")</script>';
+});
+Route::get('/vc', function () {
+    Artisan::call('view:clear');
+    echo '<script>alert("view clear Success")</script>';
 });
 
 

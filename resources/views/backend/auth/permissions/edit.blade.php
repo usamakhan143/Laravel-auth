@@ -79,6 +79,10 @@
 										echo "selected";
 									}  ?>>Report</option>
 
+									<option value="holidays_post-type" <?php if ($peredit->for == 'holidays_post-type') {
+										echo "selected";
+									}  ?>>Holidays</option>
+
 									<option value="other_post-type" <?php if ($peredit->for == 'other_post-type') {
 										echo "selected";
 									}  ?>>Other</option>

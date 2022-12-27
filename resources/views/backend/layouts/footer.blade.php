@@ -93,8 +93,6 @@
 	    });
     </script>
 
-	<script src="{{ asset('backend/js/lightbox-plus-jquery.min.js') }}"></script>
-
 
 	@section('scripts')
 		@show

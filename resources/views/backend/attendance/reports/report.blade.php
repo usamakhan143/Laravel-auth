@@ -88,6 +88,15 @@
                         <div class="col-md-6 col-lg-4 col-xlg-3">
                             <div class="box box-inverse box-info">
                                 <div class="box-body text-center">
+                                    <h1 class="font-light text-white">{{ $totalLate ?? 0 }}</h1>
+                                    <h6 class="text-white mb-10">Late Days</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <div class="col-md-6 col-lg-4 col-xlg-3">
+                            <div class="box box-inverse box-info">
+                                <div class="box-body text-center">
                                     <h1 class="font-light text-white">{{ $totalOvertimeDays }}</h1>
                                     <h6 class="text-white mb-10">Overtime Days</h6>
                                 </div>
@@ -150,7 +159,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @forelse($getAttendance as $detail)
+                            @foreach($getAttendance as $detail)
                                 <tr>
                                     <td>{{ $detail->day }}/{{ $detail->month }}</td>
                                     <td>{{ date('H:i', strtotime($detail->startTime)) }}</td>
@@ -195,11 +204,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <span class="bg-danger text-white p-1">No Attendance</span>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
 
@@ -234,7 +239,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                            @forelse($getAttendanceWithoutCheckout as $detail)
+                            @foreach($getAttendanceWithoutCheckout as $detail)
                                 <tr>
                                     <td>{{ $detail->day }}/{{ $detail->month }}</td>
                                     <td>{{ date('H:i', strtotime($detail->startTime)) }}</td>
@@ -254,11 +259,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <span class="bg-danger text-white p-1">No Attendance</span>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend\attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\attendance\Attendance;
+use App\Models\attendance\Publicholiday;
 use App\Models\backend\Account;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,6 +48,13 @@ class ReportController extends Controller
 
         $emp = $request->employee;
         $mnth = $request->month;
+
+        // Get If Public Holiday is Exist
+        $get_holiday = Publicholiday::where([
+            ['month', $mnth],
+            ['year', date('Y')],
+            ['status', 1]
+            ])->get();
 
         // Count Sundays in a month
         $dateDay = Carbon::now();//use your date to get month and year
@@ -145,8 +153,20 @@ class ReportController extends Controller
         $userPro = Account::where('id', $emp)->first();
         // Attendance Result
         $totalWorkingDays = $totalDays;
-        $totalPresentDays = count($getAttendance) + $totalSundays;
-        $totalAbsents = $totalWorkingDays - $totalPresentDays;
+        
+        // Checking If the month has 0 attendance then It will show NaN
+        if(count($getAttendance) == 0)
+        {
+            $candidate_Attn = 'NaN';
+            $absentDays = 'NaN';
+        }
+        else {
+            $candidate_Attn = count($getAttendance) + $totalSundays + count($get_holiday);
+            $absentDays = $totalWorkingDays - $candidate_Attn;
+        }
+        
+        $totalPresentDays = $candidate_Attn;
+        $totalAbsents = $absentDays;
         $totalHalfDays = count($getHalfday);
         $totalLate = count($getLate);
         $totalOvertimeDays = count($getOvertimedays);
@@ -154,7 +174,7 @@ class ReportController extends Controller
 
         $month = Carbon::createFromFormat('m', $mnth);
         $monthName = $month->format('F');
-        return view('backend.attendance.reports.report', compact('totalOvertime','totalOvertimeDays', 'monthName', 'totalAbsents', 'totalSundays', 'getAttendance', 'userPro', 'totalWorkingDays', 'totalPresentDays', 'totalHalfDays', 'getAttendanceWithoutCheckout'));
+        return view('backend.attendance.reports.report', compact('totalLate','totalOvertime','totalOvertimeDays', 'monthName', 'totalAbsents', 'totalSundays', 'getAttendance', 'userPro', 'totalWorkingDays', 'totalPresentDays', 'totalHalfDays', 'getAttendanceWithoutCheckout'));
 
     }
 
@@ -163,7 +183,7 @@ class ReportController extends Controller
             ['out', 1],
             ['month', date('m')],
             ['year', date('Y')]
-        ])->orderBy('created_at', 'desc')->get([
+        ])->orderBy('updated_at', 'desc')->get([
             'startTime',
             'endTime',
             'month',

@@ -2,6 +2,13 @@
 
 @section('Page-Heading', 'Add New Permission for role')
 
+@section('backend_head')
+
+    {{-- Theme style --}}
+    <link rel="stylesheet" href="{{ asset('backend/css/master_style.css') }}">
+
+@endsection
+
 @section('content')
 
 	<!-- Basic Forms -->
@@ -23,7 +30,7 @@
 			@endif
           <div class="row">
             <div class="col">
-            	<form action="{{ route('permissions.store') }}" method="post">
+            	<form action="{{ route('permissions.store') }}" class="prevent-form-multiple-submit" method="post">
             		@csrf
 					<div class="form-group">
 						<h5>Permission Name <span class="text-danger">*</span></h5>
@@ -50,6 +57,7 @@
 								<option value="dashboard-panel">Dashboard Panel</option>
 								<option value="networks_post-type">Networks</option>
 								<option value="reports_post-type">Report</option>
+								<option value="holidays_post-type">Holidays</option>
 								<option value="other_post-type">Other</option>
 							</select>
 						</div>
@@ -62,7 +70,7 @@
 					
 				
 					<div class="text-xs-right">
-						<button type="submit" class="btn btn-info">Add permission</button>
+						<button type="submit" class="btn btn-info prevent-button-multiple-submit"><i class="spinner fas fa-spinner fa-spin"></i> Add permission</button>
 					</div>
 				</form>
             	
@@ -75,5 +83,11 @@
       </div>
       <!-- /.box -->
   </div>
+
+@endsection
+
+@section('scripts')
+
+    <script src="{{ asset('backend/js/forms/submit.js') }}"></script>
 
 @endsection

@@ -2,6 +2,12 @@
 
 @section('Page-Heading', 'Profile')
 
+@section('backend_head')
+
+    <link href="{{ asset('backend/css/lightbox.min.css') }}" rel="stylesheet" />
+
+@endsection
+
 @section('content')
 
     <section class="content">
@@ -9,7 +15,7 @@
         <div class="row">
             <div class="col-xl-4 col-lg-5">
 
-                <!-- Profile Image -->
+                {{-- Profile Image --}}
                 <div class="box">
                     <div class="box-body box-profile">
                         <img id="profileImageDisplay" class="profile-user-img rounded-circle img-fluid mx-auto d-block"
@@ -54,7 +60,7 @@
                 </div>
 
             </div>
-            <!-- /.col -->
+            {{-- /.col --}}
             <div class="col-xl-8 col-lg-7">
                 <div class="box">
                     <div class="box-header with-border">
@@ -71,45 +77,82 @@
                         @elseif(Session::has('error_msg'))
                             <p class="alert alert-danger fade-message">{{ Session::get('error_msg') }}</p>
                         @endif
+
+                        @if (Auth::guard('account')->user()->cnic == null && Auth::guard('account')->user()->profile->status == 0)
+                        @elseif(Auth::guard('account')->user()->cnic != null &&
+                            Auth::guard('account')->user()->cnic->status == 0 &&
+                            Auth::guard('account')->user()->profile->status == 0)
+                            <div class="callout callout-danger">
+                                <h4>Sorry!</h4>
+                                We are unable to verify your Identity please re-upload your ID Card back & Front photocopy
+                                and please make sure that everything in the picture should be clearly visible.
+                            </div>
+                        @elseif (Auth::guard('account')->user()->cnic != null &&
+                            Auth::guard('account')->user()->cnic->status == 1 &&
+                            Auth::guard('account')->user()->profile->status == 0)
+                            <div class="callout callout-info">
+                                <h4>Please Wait!</h4>
+                                We are verifying your Identity keep patients we will approve your profile with in 24hrs.
+                            </div>
+                        @else
+                        @endif
+
                         <div class="row">
                             <div class="col">
                                 <form action="{{ route('update.profile', Auth::guard('account')->user()->id) }}"
                                     method="post" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
-
-                                    @if ($get_Profile->status == 0)
-                                        <div class="form-group">
-                                            <h5>CNIC <span class="text-danger">*</span></h5>
-                                            <div class="controls">
-                                                <input type="text" name="nic" class="form-control"
-                                                    placeholder="Enter your CNIC" value="{{ old('nic') }}" />
+                                    @can('profile.activate', Auth::user())
+                                        @if (Auth::guard('account')->user()->cnic == null ||
+                                            (Auth::guard('account')->user()->cnic->status == 0 && Auth::guard('account')->user()->profile->status == 0))
+                                            <div class="form-group">
+                                                <h5>CNIC Number <span class="text-danger">*</span></h5>
+                                                <div class="controls">
+                                                    <input type="text" name="nic" class="form-control"
+                                                        placeholder="Ex. 42XXX-XXXXXXXXX-X" />
+                                                </div>
+                                                @error('nic')
+                                                    <p class="validate">
+                                                        {{ $message }}
+                                                    </p>
+                                                @enderror
                                             </div>
-                                            @error('nic')
-                                                <p class="validate">
-                                                    {{ $message }}
-                                                </p>
-                                            @enderror
-                                        </div>
 
-                                        <div class="form-group">
-                                            <h5>Gender <span class="text-danger">*</span></h5>
-                                            <div class="demo-radio-button">
-                                                <input name="gender" type="radio" id="radio_1" value="Male">
-                                                <label for="radio_1">Male</label>
-                                                <input name="gender" type="radio" id="radio_2" value="Female">
-                                                <label for="radio_2">Female</label>
+                                            <div class="form-group">
+                                                <h5>CNIC Front & Back <span class="text-danger">*</span></h5>
+                                                <div class="controls">
+                                                    <input type="file" name="id-picture[]" class="form-control" multiple />
+                                                </div>
+                                                <div class="form-control-feedback">
+                                                    <small>Please select two photocopy images of your Identity card Front and Back in this field. Only two images are required.</small>
+                                                </div>
+                                                @error('id-picture')
+                                                    <p class="validate">
+                                                        {{ $message }}
+                                                    </p>
+                                                @enderror
                                             </div>
-                                            @error('gender')
-                                                <p class="validate">
-                                                    {{ $message }}
-                                                </p>
-                                            @enderror
-                                        </div>
-                                    @endif
+
+                                            <div class="form-group">
+                                                <h5>Gender <span class="text-danger">*</span></h5>
+                                                <div class="demo-radio-button">
+                                                    <input name="gender" type="radio" id="radio_1" value="Male">
+                                                    <label for="radio_1">Male</label>
+                                                    <input name="gender" type="radio" id="radio_2" value="Female">
+                                                    <label for="radio_2">Female</label>
+                                                </div>
+                                                @error('gender')
+                                                    <p class="validate">
+                                                        {{ $message }}
+                                                    </p>
+                                                @enderror
+                                            </div>
+                                        @endif
+                                    @endcan
 
                                     <div class="form-group">
-                                        <h5>Profile Picture <span class="text-danger">*</span></h5>
+                                        <h5>Profile Picture</h5>
                                         <div class="controls">
                                             <input type="file" id="getProfileImage" name="profileImage"
                                                 class="form-control" />
@@ -122,7 +165,13 @@
                                     </div>
 
                                     <div class="text-xs-right">
-                                        <button type="submit" class="btn btn-info">Update</button>
+                                        <button type="submit" class="btn btn-info">
+                                            @if (Auth::guard('account')->user()->cnic == null || Auth::guard('account')->user()->cnic->status == 0)
+                                                Activate
+                                            @else
+                                                Update
+                                            @endif
+                                        </button>
                                     </div>
                                 </form>
 
@@ -134,11 +183,11 @@
                     </div>
                     {{-- /.box-body --}}
                 </div>
-                <!-- /.nav-tabs-custom -->
+                {{-- /.nav-tabs-custom --}}
             </div>
-            <!-- /.col -->
+            {{-- /.col --}}
         </div>
-        <!-- /.row -->
+        {{-- /.row --}}
 
     </section>
 
@@ -146,7 +195,7 @@
 
 
 @section('scripts')
-
+    <script src="{{ asset('backend/js/lightbox-plus-jquery.min.js') }}"></script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {

@@ -46,6 +46,23 @@
                                         </b>
                                         <h6 class="margin-bottom">{{ $getAccount->profile->gender }}</h6>
                                     @endif
+                                    @can('profile.Idcard', Auth::user())
+                                        @if ($getAccount->cnic != null)
+                                            <b>
+                                                <p>Identity Card:</p>
+                                            </b>
+                                            <a href="{{ asset('storage/' . $getAccount->cnic->pic_1) }}" target="_blank"><img
+                                                    @if (request()->getHttpHost() == '127.0.0.1:8000') src="{{ asset('storage/' . $getAccount->cnic->pic_1) }}"
+                                            @else
+                                                src="{{ asset('storage/' . $getAccount->cnic->pic_1) }}" @endif />
+                                            </a><br /><br />
+                                            <a href="{{ asset('storage/' . $getAccount->cnic->pic_2) }}" target="_blank"><img
+                                                    @if (request()->getHttpHost() == '127.0.0.1:8000') src="{{ asset('storage/' . $getAccount->cnic->pic_2) }}"
+                                            @else
+                                                src="{{ asset('storage/' . $getAccount->cnic->pic_2) }}" @endif />
+                                            </a>
+                                        @endif
+                                    @endcan
                                 </div>
                             </div>
                         </div>
@@ -161,7 +178,8 @@
                                     <div class="form-group">
                                         <h5>From <span class="text-danger">*</span></h5>
                                         <div class="controls">
-                                            <input type="date" name="from_date" class="form-control" value="{{ old('from_date') }}"/>
+                                            <input type="date" name="from_date" class="form-control"
+                                                value="{{ old('from_date') }}" />
                                         </div>
                                         @error('from-date')
                                             <p class="validate">
@@ -173,7 +191,8 @@
                                     <div class="form-group">
                                         <h5>To <span class="text-danger">*</span></h5>
                                         <div class="controls">
-                                            <input type="date" name="to_date" class="form-control" value="{{ old('to_date') }}" />
+                                            <input type="date" name="to_date" class="form-control"
+                                                value="{{ old('to_date') }}" />
                                         </div>
                                         @error('to-date')
                                             <p class="validate">
@@ -222,77 +241,77 @@
                                                 <th>Where</th>
                                             </tr>
                                         </tfoot>
-                                            <tbody>
-                                                @forelse($get_Atte as $detail)
-                                                    <tr>
-                                                        <td>{{ $detail->day }}</td>
-                                                        <td>{{ date('H:i', strtotime($detail->startTime)) }}</td>
-                                                        <td>
-                                                            @if ($detail->endTime != 'NaN')
-                                                                {{ date('H:i', strtotime($detail->endTime)) }}
-                                                            @else
-                                                                NaN
-                                                            @endif
+                                        <tbody>
+                                            @forelse($get_Atte as $detail)
+                                                <tr>
+                                                    <td>{{ $detail->day }}</td>
+                                                    <td>{{ date('H:i', strtotime($detail->startTime)) }}</td>
+                                                    <td>
+                                                        @if ($detail->endTime != 'NaN')
+                                                            {{ date('H:i', strtotime($detail->endTime)) }}
+                                                        @else
+                                                            NaN
+                                                        @endif
 
-                                                        </td>
-                                                        <td>
-                                                            @if ($detail->isLate > 0)
-                                                                <span class="label label-danger">LATE</span>
-                                                            @else
-                                                                NO
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            @if ($detail->isHalfDay > 0)
-                                                                <span class="label label-danger">HALF DAY</span>
-                                                            @else
-                                                                NO
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ number_format((float) $detail->workingHours / 60, 1, '.', '') }}
-                                                            Hrs
-                                                        </td>
-                                                        <td>
-                                                            @if ($detail->isOvertime > 0)
-                                                                <span class='badge badge-pill badge-brown'
-                                                                    title="{{ number_format((float) $detail->over_time / 60, 1, '.', '') }} hrs">OVERTIME</span>
-                                                            @else
-                                                                NO
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            @if ($detail->atOffice < 1)
-                                                                <span class="badge badge-pill badge-info">REMOTE</span>
-                                                            @else
-                                                                <span class='badge badge-pill badge-warning'>OFFICE</span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @empty
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->isLate > 0)
+                                                            <span class="label label-danger">LATE</span>
+                                                        @else
+                                                            NO
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->isHalfDay > 0)
+                                                            <span class="label label-danger">HALF DAY</span>
+                                                        @else
+                                                            NO
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ number_format((float) $detail->workingHours / 60, 1, '.', '') }}
+                                                        Hrs
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->isOvertime > 0)
+                                                            <span class='badge badge-pill badge-brown'
+                                                                title="{{ number_format((float) $detail->over_time / 60, 1, '.', '') }} hrs">OVERTIME</span>
+                                                        @else
+                                                            NO
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($detail->atOffice < 1)
+                                                            <span class="badge badge-pill badge-info">REMOTE</span>
+                                                        @else
+                                                            <span class='badge badge-pill badge-warning'>OFFICE</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
                                                 <tr>
                                                     <span class="bg-danger text-white p-1">No Attendance</span>
                                                 </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
 
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- /.box-body --}}
                     </div>
-                    <!-- /.nav-tabs-custom -->
+                    {{-- /.box-body --}}
                 </div>
-                <!-- /.col -->
+                <!-- /.nav-tabs-custom -->
             </div>
-            <!-- /.row -->
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 
-        </section>
+    </section>
 
-    @endsection
+@endsection
 
-    @section('scripts')
-        @include('backend.layouts.datatables')
-    @endsection
+@section('scripts')
+    @include('backend.layouts.datatables')
+@endsection

@@ -31,15 +31,17 @@ class AuthServiceProvider extends ServiceProvider
         // Change password
         Gate::define('accounts.chgPassword', 'App\Policies\AccountPolicy@chgPassword');
         
-        //Permissions
+        // Permissions
         Gate::resource('permissions', 'App\Policies\PermissionPolicy');
 
-        //Roles
+        // Roles
         Gate::resource('roles', 'App\Policies\RolePolicy');
         
         // Profile
         Gate::define('profile.view', 'App\Policies\ProfilePolicy@view');
         Gate::define('profile.IdNum', 'App\Policies\ProfilePolicy@identityNumberView');
+        Gate::define('profile.Idcard', 'App\Policies\ProfilePolicy@idCard');
+        Gate::define('profile.activate', 'App\Policies\ProfilePolicy@activateProfile');
 
         // Shifts
         Gate::define('shift.view', 'App\Policies\ShiftPolicy@viewAll');
@@ -54,6 +56,7 @@ class AuthServiceProvider extends ServiceProvider
         // Main Dashboard Panel
         Gate::define('employees', 'App\Policies\DashboardpagePolicy@viewEmp');
         Gate::define('employees.insideoffice', 'App\Policies\DashboardpagePolicy@viewAttendance');
+        Gate::define('pending.profiles', 'App\Policies\DashboardpagePolicy@viewPendingProf');
 
         // Network
         Gate::define('networks.view', 'App\Policies\NetworkPolicy@viewAll');
@@ -66,5 +69,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('reports.generate', 'App\Policies\ReportPolicy@generate');
         Gate::define('reports.thismonth', 'App\Policies\ReportPolicy@allThisMonthAttendance');
         Gate::define('reports.singlepageuserattend', 'App\Policies\ReportPolicy@userSinglePageAttendance');
+
+        // Other
+        Gate::define('settings.view', 'App\Policies\SettingPolicy@settingLink');
+
+        // Holiday
+        Gate::define('Holiday.view', 'App\Policies\HolidayPolicy@holidayIndex');
+        Gate::define('Holiday.create', 'App\Policies\HolidayPolicy@holidayCreate');
+        Gate::define('Holiday.edit', 'App\Policies\HolidayPolicy@holidayEdit');
+        Gate::define('Holiday.delete', 'App\Policies\HolidayPolicy@holidayDelete');
     }
 }

@@ -23,6 +23,10 @@ class DashboardpagePolicy
     
     }
 
+    public function viewPendingProf(Account $user) {
+        return $this->getPermissions($user, 'Pending-profiles-admin-view');
+    }
+
      //Main Function for all the policies
      protected function getPermissions($modelName, $permission_name)
      {

@@ -154,6 +154,20 @@
 			            </div>
 
 						<div class="col-lg-3 pt-4 pb-4">
+			            	<h5>Holidays <span class="text-danger">*</span></h5>
+			            	<div class="demo-checkbox">
+			            		
+			            		@foreach($permissions as $detail)
+			            			@if($detail->for == 'holidays_post-type')
+										<input type="checkbox" name="permissions[]" id="{{ $detail->name }}" class="chk-col-blue" value="{{ $detail->id }}" {{ in_array($detail->id, $rolepr) ? 'checked' : ''}}>
+										<label for="{{ $detail->name }}">{{ $detail->name }}</label>
+									@endif
+								@endforeach
+
+			            	</div>
+			            </div>
+
+						<div class="col-lg-3 pt-4 pb-4">
 							<h5>Other Permissions <span class="text-danger">*</span></h5>
 							<div class="demo-checkbox">
 								

@@ -18,24 +18,23 @@
                     width: 140px;
                 }
 
-                .bar {
-                    float: left;
-                    background-color: white;
-                    background-image: none;
-                    padding: 20px;
-                    font-family: fontAwesome;
-                    color: #fff;
-                }
-
-                .bar:hover {
-                    color: rgb(189, 199, 255);
-                }
-
             }
 
-            .bar{
-                color:transparent;
-                font-size: 0px;
+            .bar {
+                float: left;
+                background-color: transparent;
+                background-image: none;
+                padding: 20px;
+                font-family: fontAwesome;
+                color: #fff;
+                font-size: 10px;
+            }
+            
+            .bar:hover {
+                color: rgb(234, 237, 255);
+            }
+            .bar:focus {
+                color: rgb(225, 229, 255);
             }
         </style>
         <span class="logo-lg">

@@ -48,8 +48,13 @@
                 </tfoot>
                 <tbody>
                     @foreach ($accounts as $detail)
-                        <tr data-href="{{ route('show.account', $detail->id) }}">
-                            <td>{{ $detail->name }}</td>
+                        <tr @can('reports.singlepageuserattend', Auth::user())data-href="{{ route('show.account', $detail->id) }}"@endcan>
+                            <td><a class="avatar avatar-lg" href="#">
+                                <img @if (request()->getHttpHost() == '127.0.0.1:8000') src="{{ asset($detail->image) }}"
+                                @else
+                                src="{{ asset('storage/' . $detail->image) }}" @endif alt="Profile Picture">
+                              </a> {{ $detail->name }}
+                            </td>
                             <td>{{ $detail->email }}</td>
                             <td>{{ $detail->phone }}</td>
                             <td>
@@ -72,14 +77,14 @@
                                     </a> --}}
 
                                     <a href="{{ route('accounts.edit', $detail->id) }}"
-                                        class="btn btn-block btn-success btn-xs">
-                                        <i class="fa fa-edit"></i> Edit
+                                        class="btn btn-social-icon btn-bitbucket">
+                                        <i class="fa fa-edit"></i>
                                     </a>
 
                                     @can('accounts.delete', Auth::user())
-                                        <a href="{{ route('accountDestroy', $detail->id) }}" class="btn btn-block btn-danger btn-xs"
+                                        <a href="{{ route('accountDestroy', $detail->id) }}" class="btn btn-social-icon btn-foursquare"
                                             onclick="return confirm('Are you sure you want to delete this account?');">
-                                            <i class="fa fa-trash"></i> Delete
+                                            <i class="fa fa-trash"></i>
                                         </a>
                                     @endcan
                                 </td>
